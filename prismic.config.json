@@ -1,0 +1,9 @@
+{
+  "repositoryName": "katopodis",
+  "routes": [
+    {
+      "type": "homepage",
+      "path": "/"
+    }
+  ]
+}

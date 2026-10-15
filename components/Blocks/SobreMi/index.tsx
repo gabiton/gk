@@ -1,29 +1,64 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { RichTextField } from "@prismicio/client";
+import { PrismicRichText } from "@prismicio/react";
 import type { Swiper as SwiperInstance } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 
-const slides = Array.from({ length: 6 }, (_, index) => ({
+type VideoItem = {
+    id: number;
+    videoUrl: string;
+    title: string;
+};
+
+const mockSlides: VideoItem[] = Array.from({ length: 6 }, (_, index) => ({
     id: index + 1,
     videoUrl: "https://www.youtube.com/watch?v=oPX2FmM3nUY",
-    image: "https://img.youtube.com/vi/oPX2FmM3nUY/hqdefault.jpg",
-    title: `Título de maqueta ${index + 1}`,
+    title: "Título de maqueta " + (index + 1),
 }));
 
-function getYouTubeEmbedUrl(videoUrl: string) {
-    const url = new URL(videoUrl);
-    const videoId =
-        url.searchParams.get("v") ||
-        url.pathname.split("/").filter(Boolean).pop();
+function getYouTubeVideoId(videoUrl: string) {
+    if (!videoUrl) return "oPX2FmM3nUY";
 
-    return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+    const url = new URL(videoUrl);
+    return (
+        url.searchParams.get("v") ||
+        url.pathname.split("/").filter(Boolean).pop() ||
+        "oPX2FmM3nUY"
+    );
 }
 
-export function SobreMi() {
+function getYouTubeThumbnailUrl(videoUrl: string) {
+    return (
+        "https://img.youtube.com/vi/" +
+        getYouTubeVideoId(videoUrl) +
+        "/hqdefault.jpg"
+    );
+}
+
+function getYouTubeEmbedUrl(videoUrl: string) {
+    return (
+        "https://www.youtube-nocookie.com/embed/" +
+        getYouTubeVideoId(videoUrl) +
+        "?autoplay=1&rel=0"
+    );
+}
+
+export function SobreMi({
+    title = "SOBRE MÍ",
+    image = "/sobremi.jpg",
+    text,
+    videos = mockSlides,
+}: {
+    title?: string;
+    image?: string;
+    text?: RichTextField;
+    videos?: VideoItem[];
+}) {
     const swiperRef = useRef<SwiperInstance | null>(null);
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
@@ -48,38 +83,46 @@ export function SobreMi() {
         <section className="SobreMi">
             <div className="container">
                 <div className="SobreMi__top">
-                    <div className="SobreMi__top__tag">SOBRE MÍ</div>
+                    <div className="SobreMi__top__tag">{title}</div>
                 </div>
                 <div className="SobreMi__content">
                     <figure>
-                        <img src="/sobremi.jpg" alt="" />
+                        <img src={image} alt="" />
                     </figure>
                     <div className="SobreMi__content__text">
-                        <p>
-                            Gabriel Katopodis es una persona de diálogo y
-                            trabajo que dice, hace y está. Una forma de hacer
-                            política comprometida con la gente. Es abogado,
-                            futbolero, familiero y peronista. Está casado con
-                            Nancy y es papá de Aylén y Santiago.
-                        </p>
-                        <p>
-                            Hoy se desempeña como ministro de Infraestructura y
-                            Servicios Públicos de la Provincia de Buenos Aires;
-                            ocupó el mismo cargo en Obras Públicas de la Nación
-                            y fue intendente del municipio de Gral. San Martín
-                            durante dos mandatos consecutivos.
-                        </p>
-                        <p>
-                            Su recorrido se construye todos los días, caminando
-                            la provincia, gestionando, escuchando y militando.
-                            Siempre cerca.
-                        </p>
-                        <p>
-                            <strong>
-                                Conocé su mirada y sus ideas sobre los temas que
-                                defiende.
-                            </strong>
-                        </p>
+                        {text ? (
+                            <PrismicRichText field={text} />
+                        ) : (
+                            <>
+                                <p>
+                                    Gabriel Katopodis es una persona de diálogo
+                                    y trabajo que dice, hace y está. Una forma de
+                                    hacer política comprometida con la gente. Es
+                                    abogado, futbolero, familiero y peronista.
+                                    Está casado con Nancy y es papá de Aylén y
+                                    Santiago.
+                                </p>
+                                <p>
+                                    Hoy se desempeña como ministro de
+                                    Infraestructura y Servicios Públicos de la
+                                    Provincia de Buenos Aires; ocupó el mismo
+                                    cargo en Obras Públicas de la Nación y fue
+                                    intendente del municipio de Gral. San
+                                    Martín durante dos mandatos consecutivos.
+                                </p>
+                                <p>
+                                    Su recorrido se construye todos los días,
+                                    caminando la provincia, gestionando,
+                                    escuchando y militando. Siempre cerca.
+                                </p>
+                                <p>
+                                    <strong>
+                                        Conocé su mirada y sus ideas sobre los
+                                        temas que defiende.
+                                    </strong>
+                                </p>
+                            </>
+                        )}
                     </div>
                 </div>
 
@@ -120,17 +163,25 @@ export function SobreMi() {
                         }}
                         pagination={{ clickable: true }}
                     >
-                        {slides.map((slide) => (
+                        {videos.map((slide) => (
                             <SwiperSlide key={slide.id}>
                                 <article className="SobreMi__slider__item">
-                                    <img src={slide.image} alt="" />
+                                    <img
+                                        src={getYouTubeThumbnailUrl(
+                                            slide.videoUrl,
+                                        )}
+                                        alt=""
+                                    />
                                     <button
                                         className="SobreMi__slider__play"
                                         type="button"
-                                        aria-label={`Reproducir: ${slide.title}`}
-                                        onClick={() =>
-                                            setActiveVideo(slide.videoUrl)
+                                        aria-label={
+                                            "Reproducir: " + slide.title
                                         }
+                                        onClick={() => {
+                                            if (slide.videoUrl)
+                                                setActiveVideo(slide.videoUrl);
+                                        }}
                                     >
                                         Reproducir
                                     </button>

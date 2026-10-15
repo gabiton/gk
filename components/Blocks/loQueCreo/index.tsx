@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const slides = [
+const mockSlides = [
     {
         title: "Gobernar es estar y decidir",
         description:
@@ -32,15 +32,30 @@ const slides = [
     },
 ];
 
-export function LoQueCreo() {
+type SlideItem = {
+    title: string;
+    description: string;
+    image: string;
+    href: string;
+};
+
+export function LoQueCreo({
+    title = "LO QUE CREO",
+    viewAllHref = "#",
+    slides = mockSlides,
+}: {
+    title?: string;
+    viewAllHref?: string;
+    slides?: SlideItem[];
+}) {
     const swiperRef = useRef<SwiperInstance | null>(null);
 
     return (
         <section className="loQueCreo">
             <div className="container">
                 <div className="loQueCreo__top">
-                    <div className="loQueCreo__tag">LO QUE CREO</div>
-                    <a href="#">Ver todos</a>
+                    <div className="loQueCreo__tag">{title}</div>
+                    <a href={viewAllHref}>Ver todos</a>
                 </div>
 
                 <div className="loQueCreo__carousel">

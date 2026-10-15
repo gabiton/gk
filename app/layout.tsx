@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "../scss/main.scss";
 import { Header } from "@/components/Layout/Header";
 import { Footer } from "@/components/Layout/Footer";
+import { PrismicPreview } from "@prismicio/next";
+import { repositoryName } from "@/prismicio";
 export const metadata: Metadata = {
     title: {
         default: "Gabriel Katopodis",
@@ -29,6 +31,7 @@ export default function RootLayout({
                 <Header></Header>
                 {children}
                 <Footer></Footer>
+                <PrismicPreview repositoryName={repositoryName} />
             </body>
         </html>
     );

@@ -15,13 +15,16 @@ const galleryItems = Array.from({ length: 8 }, (_, index) => ({
     reposts: 8 + index,
 }));
 
-const videoItems = Array.from({ length: 8 }, (_, index) => ({
+const mockVideoItems = Array.from({ length: 8 }, (_, index) => ({
     id: `video-${index + 1}`,
     image: `https://placehold.co/836x524?text=Video+${index + 1}`,
     videoUrl: "https://www.youtube.com/watch?v=oPX2FmM3nUY",
     channel: ["AMÉRICA TV", "CANAL 9", "TV PÚBLICA", "C5N"][index % 4],
     date: `${14 + index} de Agosto, 2025`,
+    channelLogo: "/tv.png",
 }));
+
+type VideoItem = (typeof mockVideoItems)[number];
 
 function getYouTubeEmbedUrl(videoUrl: string) {
     const url = new URL(videoUrl);
@@ -32,7 +35,15 @@ function getYouTubeEmbedUrl(videoUrl: string) {
     return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
 }
 
-export function EnTodosLados({ kilometers = 174630 }: { kilometers?: number }) {
+export function EnTodosLados({
+    kilometers = 174630,
+    title = "EN TODOS LADOS",
+    videos = mockVideoItems,
+}: {
+    kilometers?: number;
+    title?: string;
+    videos?: VideoItem[];
+}) {
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
     const [currentKilometers, setCurrentKilometers] = useState(kilometers);
     const kilometerDigits = currentKilometers.toLocaleString("es-AR");
@@ -114,7 +125,7 @@ export function EnTodosLados({ kilometers = 174630 }: { kilometers?: number }) {
                         </span>
                     </div>
                     km
-                    <span className="line2">EN TODOS LADOS</span>
+                    <span className="line2">{title}</span>
                 </h2>
 
                 <div className="EnTodosLados__grid">
@@ -154,7 +165,7 @@ export function EnTodosLados({ kilometers = 174630 }: { kilometers?: number }) {
                             1024: { slidesPerView: 3 },
                         }}
                     >
-                        {videoItems.map((item) => (
+                        {videos.map((item) => (
                             <SwiperSlide key={item.id}>
                                 <article className="EnTodosLados__videos__item">
                                     <figure>
@@ -166,9 +177,10 @@ export function EnTodosLados({ kilometers = 174630 }: { kilometers?: number }) {
                                             className="EnTodosLados__videos__play"
                                             type="button"
                                             aria-label={`Reproducir video de ${item.channel}`}
-                                            onClick={() =>
-                                                setActiveVideo(item.videoUrl)
-                                            }
+                                            onClick={() => {
+                                                if (item.videoUrl)
+                                                    setActiveVideo(item.videoUrl);
+                                            }}
                                         >
                                             Reproducir
                                         </button>
@@ -176,16 +188,14 @@ export function EnTodosLados({ kilometers = 174630 }: { kilometers?: number }) {
                                     <div className="EnTodosLados__videos__item__content">
                                         <div className="EnTodosLados__videos__item__content__left">
                                             <h3>{item.channel}</h3>
-                                            <div className="date">
-                                                {item.date}
-                                            </div>
+                                            <div className="date">{item.date}</div>
                                         </div>
                                         <div
                                             className="EnTodosLados__videos__item__content__right"
                                             aria-hidden="true"
                                         >
                                             <img
-                                                src="/tv.png"
+                                                src={item.channelLogo}
                                                 alt={`Video de ${item.channel}`}
                                             />
                                         </div>

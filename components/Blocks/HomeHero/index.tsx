@@ -4,7 +4,10 @@ import { Container } from "@/components/Layout/Container";
 export const HomeHero = () => {
     return (
         <section className="HomeHero">
-            <div className="HomeHero__bg">
+            <div className="HomeHero__bg desktop">
+                <img src="/gk.jpg" alt="" />
+            </div>
+            <div className="HomeHero__bg mobile">
                 <img src="/gk.jpg" alt="" />
             </div>
 
