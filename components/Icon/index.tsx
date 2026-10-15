@@ -3,6 +3,8 @@
 // React: https://react.dev/reference/react
 // useEffect/useState: https://react.dev/reference/react/useState
 
+"use client";
+
 import { useState, useEffect } from "react";
 
 export const Icon = ({

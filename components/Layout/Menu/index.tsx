@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MobileMenuButton } from "../Header/MobileMenuButton";
-import { Icon } from "@/components/Blocks/Icon";
+import { Icon } from "@/components/Icon";
 
 /** Site navigation. Supply project-specific links through `items`. */
 export function Menu() {

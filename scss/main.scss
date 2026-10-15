@@ -5,6 +5,7 @@
 @use "./base/typography";
 @use "./base/base";
 @use "./layout/page";
+@use "./layout/posts";
 @use "./vendors/swiper";
 @use "../components/Layout/Header/styles" as header-styles;
 @use "../components/Layout/Header/Logo/styles" as logo-styles;
@@ -18,8 +19,8 @@
 @use "../components/Layout/Container/Content/styles" as content-styles;
 @use "../components/Layout/Container/Sidebar/styles" as sidebar-styles;
 
-@use "../components/Blocks/HomeHero/_styles" as HomeHero;
-@use "../components/Blocks/HomeForm/_styles" as HomeForm;
-@use "../components/Blocks/EnTodosLados/_styles" as EnTodosLados;
-@use "../components/Blocks/loQueCreo/_styles" as loQueCreo;
-@use "../components/Blocks/SobreMi/_styles" as SobreMi;
+@use "../slices/HomeHero/styles" as HomeHero;
+@use "../slices/HomeForm/styles" as HomeForm;
+@use "../slices/EnTodosLados/styles" as EnTodosLados;
+@use "../slices/LoQueCreo/styles" as LoQueCreo;
+@use "../slices/SobreMi/styles" as SobreMi;

@@ -4,6 +4,10 @@
     {
       "type": "homepage",
       "path": "/"
+    },
+    {
+      "type": "post",
+      "path": "/noticias/:uid"
     }
   ]
 }

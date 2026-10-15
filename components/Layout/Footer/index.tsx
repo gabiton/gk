@@ -1,4 +1,4 @@
-import { Icon } from "@/components/Blocks/Icon";
+import { Icon } from "@/components/Icon";
 
 const blockClass = "footer";
 export function Footer() {

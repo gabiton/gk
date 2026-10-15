@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Menu } from "../Menu";
-import { Icon } from "@/components/Blocks/Icon";
+import { Icon } from "@/components/Icon";
 
 export const Header = () => {
     return (

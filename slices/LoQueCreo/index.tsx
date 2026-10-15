@@ -3,7 +3,7 @@ import { asText, isFilled } from "@prismicio/client";
 import type { Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 
-import { LoQueCreo as LoQueCreoBlock } from "@/components/Blocks/loQueCreo";
+import { Block } from "./Block";
 
 export type LoQueCreoProps = SliceComponentProps<Content.LoQueCreoSlice>;
 
@@ -14,15 +14,15 @@ const LoQueCreo: FC<LoQueCreoProps> = ({ slice }) => {
         image: isFilled.image(item.image)
             ? item.image.url
             : `https://placehold.co/1060x786?text=Lo+que+creo+${index + 1}`,
-        href: isFilled.link(item.link) ? item.link.url : "#",
+        href: isFilled.link(item.link) ? (item.link.url ?? "#") : "#",
     }));
 
     return (
-        <LoQueCreoBlock
+        <Block
             title={slice.primary.title || undefined}
             viewAllHref={
                 isFilled.link(slice.primary.view_all_link)
-                    ? slice.primary.view_all_link.url
+                    ? (slice.primary.view_all_link.url ?? "#")
                     : "#"
             }
             slides={slides.length > 0 ? slides : undefined}

@@ -39,7 +39,7 @@ type SlideItem = {
     href: string;
 };
 
-export function LoQueCreo({
+export function Block({
     title = "LO QUE CREO",
     viewAllHref = "#",
     slides = mockSlides,

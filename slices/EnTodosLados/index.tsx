@@ -3,7 +3,7 @@ import { isFilled } from "@prismicio/client";
 import type { Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 
-import { EnTodosLados as EnTodosLadosBlock } from "@/components/Blocks/EnTodosLados";
+import { Block } from "./Block";
 
 export type EnTodosLadosProps = SliceComponentProps<Content.EnTodosLadosSlice>;
 
@@ -13,7 +13,9 @@ const EnTodosLados: FC<EnTodosLadosProps> = ({ slice }) => {
         image: isFilled.image(video.image)
             ? video.image.url
             : `https://placehold.co/836x524?text=Video+${index + 1}`,
-        videoUrl: isFilled.link(video.video_url) ? video.video_url.url : "",
+        videoUrl: isFilled.link(video.video_url)
+            ? (video.video_url.url ?? "")
+            : "",
         channel: video.title || "",
         date: video.date || "",
         channelLogo: isFilled.image(video.channel_logo)
@@ -22,7 +24,7 @@ const EnTodosLados: FC<EnTodosLadosProps> = ({ slice }) => {
     }));
 
     return (
-        <EnTodosLadosBlock
+        <Block
             kilometers={slice.primary.kilometers ?? undefined}
             title={slice.primary.title || "EN TODOS LADOS"}
             videos={videos.length > 0 ? videos : undefined}

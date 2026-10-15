@@ -6,7 +6,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Icon } from "../Icon";
+import { Icon } from "@/components/Icon";
 
 const galleryItems = Array.from({ length: 8 }, (_, index) => ({
     id: `gallery-${index + 1}`,
@@ -35,7 +35,7 @@ function getYouTubeEmbedUrl(videoUrl: string) {
     return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
 }
 
-export function EnTodosLados({
+export function Block({
     kilometers = 174630,
     title = "EN TODOS LADOS",
     videos = mockVideoItems,

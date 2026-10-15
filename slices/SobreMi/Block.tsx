@@ -48,7 +48,7 @@ function getYouTubeEmbedUrl(videoUrl: string) {
     );
 }
 
-export function SobreMi({
+export function Block({
     title = "SOBRE MÍ",
     image = "/sobremi.jpg",
     text,
