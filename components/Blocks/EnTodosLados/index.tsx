@@ -18,7 +18,7 @@ const galleryItems = Array.from({ length: 8 }, (_, index) => ({
 const videoItems = Array.from({ length: 8 }, (_, index) => ({
     id: `video-${index + 1}`,
     image: `https://placehold.co/836x524?text=Video+${index + 1}`,
-    videoUrl: "https://www.youtube.com/watch?v=Ri-o4xi3zRk",
+    videoUrl: "https://www.youtube.com/watch?v=oPX2FmM3nUY",
     channel: ["AMÉRICA TV", "CANAL 9", "TV PÚBLICA", "C5N"][index % 4],
     date: `${14 + index} de Agosto, 2025`,
 }));
@@ -185,7 +185,7 @@ export function EnTodosLados({ kilometers = 174630 }: { kilometers?: number }) {
                                             aria-hidden="true"
                                         >
                                             <img
-                                                src={item.image}
+                                                src="/tv.png"
                                                 alt={`Video de ${item.channel}`}
                                             />
                                         </div>

@@ -5,7 +5,7 @@ export const HomeHero = () => {
     return (
         <section className="HomeHero">
             <div className="HomeHero__bg">
-                <img src="https://placeholders.io/400/300" alt="" />
+                <img src="/gk.jpg" alt="" />
             </div>
 
             <Container>

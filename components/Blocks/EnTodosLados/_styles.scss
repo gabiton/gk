@@ -182,10 +182,12 @@
                 gap: 16px;
                 justify-content: space-between;
                 &__right {
+                    background: $lgrey;
                     img {
                         width: 45px;
                         aspect-ratio: 1;
                         object-fit: contain;
+                        mix-blend-mode: multiply;
                     }
                 }
             }

@@ -9,8 +9,8 @@ import "swiper/css/pagination";
 
 const slides = Array.from({ length: 6 }, (_, index) => ({
     id: index + 1,
-    videoUrl: "https://www.youtube.com/watch?v=Ri-o4xi3zRk",
-    image: "https://img.youtube.com/vi/Ri-o4xi3zRk/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=oPX2FmM3nUY",
+    image: "https://img.youtube.com/vi/oPX2FmM3nUY/hqdefault.jpg",
     title: `Título de maqueta ${index + 1}`,
 }));
 
@@ -52,10 +52,7 @@ export function SobreMi() {
                 </div>
                 <div className="SobreMi__content">
                     <figure>
-                        <img
-                            src="https://placehold.co/1060x786?text=Sobre+mi"
-                            alt=""
-                        />
+                        <img src="/sobremi.jpg" alt="" />
                     </figure>
                     <div className="SobreMi__content__text">
                         <p>
