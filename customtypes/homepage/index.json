@@ -17,6 +17,9 @@
             },
             "lo_que_creo": {
               "type": "SharedSlice"
+            },
+            "sobre_mi": {
+              "type": "SharedSlice"
             }
           }
         },

@@ -1,0 +1,57 @@
+{
+  "id": "sobre_mi",
+  "name": "SobreMi",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "",
+      "name": "Default",
+      "primary": {
+        "title": {
+          "config": {
+            "label": "Título"
+          },
+          "type": "Text"
+        },
+        "image": {
+          "config": {
+            "label": "Imagen"
+          },
+          "type": "Image"
+        },
+        "text": {
+          "config": {
+            "label": "Texto",
+            "multi": "paragraph,strong"
+          },
+          "type": "StructuredText"
+        },
+        "videos": {
+          "config": {
+            "fields": {
+              "youtube_url": {
+                "config": {
+                  "label": "URL de YouTube",
+                  "select": "web"
+                },
+                "type": "Link"
+              },
+              "title": {
+                "config": {
+                  "label": "Título"
+                },
+                "type": "Text"
+              }
+            },
+            "label": "Videos"
+          },
+          "type": "Group"
+        }
+      },
+      "version": ""
+    }
+  ]
+}
