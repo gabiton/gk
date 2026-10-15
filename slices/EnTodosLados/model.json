@@ -1,0 +1,68 @@
+{
+  "id": "en_todos_lados",
+  "name": "EnTodosLados",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "",
+      "name": "Default",
+      "primary": {
+        "kilometers": {
+          "config": {
+            "label": "Kilómetros"
+          },
+          "type": "Number"
+        },
+        "title": {
+          "config": {
+            "label": "Título"
+          },
+          "type": "Text"
+        },
+        "videos": {
+          "config": {
+            "fields": {
+              "image": {
+                "config": {
+                  "label": "Imagen"
+                },
+                "type": "Image"
+              },
+              "video_url": {
+                "config": {
+                  "label": "URL del video",
+                  "select": "web"
+                },
+                "type": "Link"
+              },
+              "title": {
+                "config": {
+                  "label": "Título"
+                },
+                "type": "Text"
+              },
+              "date": {
+                "config": {
+                  "label": "Fecha"
+                },
+                "type": "Text"
+              },
+              "channel_logo": {
+                "config": {
+                  "label": "Logo del canal"
+                },
+                "type": "Image"
+              }
+            },
+            "label": "Videos"
+          },
+          "type": "Group"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

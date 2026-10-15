@@ -11,6 +11,9 @@
             },
             "home_form": {
               "type": "SharedSlice"
+            },
+            "en_todos_lados": {
+              "type": "SharedSlice"
             }
           }
         },
