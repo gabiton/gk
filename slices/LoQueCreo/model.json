@@ -1,0 +1,62 @@
+{
+  "id": "lo_que_creo",
+  "name": "LoQueCreo",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "",
+      "name": "Default",
+      "primary": {
+        "title": {
+          "config": {
+            "label": "Título"
+          },
+          "type": "Text"
+        },
+        "view_all_link": {
+          "config": {
+            "label": "Link Ver todos"
+          },
+          "type": "Link"
+        },
+        "items": {
+          "config": {
+            "fields": {
+              "image": {
+                "config": {
+                  "label": "Imagen"
+                },
+                "type": "Image"
+              },
+              "title": {
+                "config": {
+                  "label": "Título"
+                },
+                "type": "Text"
+              },
+              "description": {
+                "config": {
+                  "label": "Texto",
+                  "single": "paragraph"
+                },
+                "type": "StructuredText"
+              },
+              "link": {
+                "config": {
+                  "label": "Link"
+                },
+                "type": "Link"
+              }
+            },
+            "label": "Items"
+          },
+          "type": "Group"
+        }
+      },
+      "version": ""
+    }
+  ]
+}
