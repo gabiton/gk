@@ -1,0 +1,30 @@
+{
+  "id": "home_form",
+  "name": "HomeForm",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "",
+      "name": "Default",
+      "primary": {
+        "title": {
+          "config": {
+            "label": "Título"
+          },
+          "type": "Text"
+        },
+        "background_video": {
+          "config": {
+            "label": "Video de fondo",
+            "select": "media"
+          },
+          "type": "Link"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

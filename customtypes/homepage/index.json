@@ -8,6 +8,9 @@
           "choices": {
             "home_hero": {
               "type": "SharedSlice"
+            },
+            "home_form": {
+              "type": "SharedSlice"
             }
           }
         },
