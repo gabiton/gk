@@ -1,0 +1,22 @@
+@use "../../../../scss/abstracts/variables" as *;
+@use "../../../../scss/abstracts/functions" as *;
+
+.mobilesearchbutton{
+    display: none;
+    @include responsive('menu-bp'){    
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        flex-direction: column;
+        padding: 9px;
+        color: $white;
+        margin-left: auto;
+        margin-right: 10px;
+        span, svg{
+            display: block;
+        }
+    }
+}

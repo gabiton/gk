@@ -1,0 +1,18 @@
+@use "../block" as *;
+
+.pageContent {
+    min-height: calc(100dvh - 370px);
+}
+.button {
+    background: $green;
+    padding: 10px 40px;
+    border-radius: 24px;
+    font-weight: 900;
+    font-size: 17px;
+    color: $blue2;
+    transition: 0.3s;
+    &:hover {
+        background: $blue;
+        color: $green;
+    }
+}

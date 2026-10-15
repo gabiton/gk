@@ -1,0 +1,55 @@
+@use "../../../scss/block" as *;
+
+.footer {
+    background: $green;
+    padding: rv(40px, 88px) 0;
+    color: $blue2;
+    .container {
+        display: flex;
+        @include responsive("menu-bp") {
+            flex-direction: column;
+        }
+    }
+    &__col {
+        @include responsiveMin("menu-bp") {
+            margin-left: auto;
+            border-left: 1px solid $blue;
+            padding-left: 40px;
+        }
+        @include responsive("menu-bp") {
+            margin-top: 20px;
+            border-top: 1px solid $blue;
+            padding-top: 20px;
+        }
+    }
+    p {
+        font-weight: 700;
+        font-size: 16px;
+    }
+    .icon-logohero {
+        display: block;
+        max-width: 370px;
+        color: $white;
+        svg {
+            height: auto;
+            width: 100%;
+        }
+    }
+    .social {
+        a {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 4px;
+            &:hover {
+                text-decoration: underline;
+            }
+            .icon {
+                width: 24px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}

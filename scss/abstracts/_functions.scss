@@ -1,0 +1,237 @@
+@use "sass:math";
+@use "sass:map";
+@use "sass:string";
+@use "./variables" as *;
+
+@mixin absolute() {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@mixin image-background($overlay: "") {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+
+    img,
+    video,
+    iframe {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    @if $overlay {
+        &:after {
+            content: "";
+            @include absolute();
+            background: $overlay;
+        }
+    }
+}
+
+.image-background {
+    @include image-background();
+}
+
+@mixin default-font() {
+    font-family: $default-font;
+}
+
+@mixin fontsizes($heading) {
+    // general styles
+    font-family: $default-font;
+    font-size: rv(
+        map.get($font-sizes-mobile, $heading),
+        map.get($font-sizes, $heading)
+    );
+    font-weight: 300;
+    letter-spacing: -0.02em;
+
+    @if $heading ==h1 {
+    } @else if $heading ==h2 {
+        line-height: 1.2;
+        // custom styles for h2
+    } @else if $heading ==h3 {
+        // custom styles for h3
+    } @else if $heading ==h4 {
+        // custom styles for h4
+    } @else if $heading ==h5 {
+        // custom styles for h5
+    } @else if $heading ==h6 {
+        // custom styles for h6
+    }
+
+    // add conditions for other headings as needed
+}
+
+// Media Query Map
+@mixin responsive($width: null) {
+    // if is not set, it uses the global one
+    $resolved: if(
+        sass($width == null or $width == " "): $block-breakpoint; else: $width,
+    );
+    $resolved: string.unquote(#{$resolved});
+
+    @if map.has-key($breakpoints, $resolved) {
+        @media only screen and (max-width: map.get($breakpoints, $resolved)) {
+            @content;
+        }
+    } @else {
+        @warn "Breakpoint `#{$resolved}` no encontrado. Disponibles: #{map.keys($breakpoints)}.";
+    }
+}
+
+// Media Query Map
+@mixin responsiveMin($width: null) {
+    // if is not set, it uses the global one
+    $resolved: if(
+        sass($width == null or $width == " "): $block-breakpoint; else: $width,
+    );
+    $resolved: string.unquote(#{$resolved});
+
+    @if map.has-key($breakpoints, $resolved) {
+        @media only screen and (min-width: map.get($breakpoints, $resolved)) {
+            @content;
+        }
+    } @else {
+        @warn "Breakpoint `#{$resolved}` no encontrado. Disponibles: #{map.keys($breakpoints)}.";
+    }
+}
+
+/* 
+Responsive between
+Ej: @include responsiveB('mobile-v', 'mobile-h'){
+*/
+@mixin responsiveb($width, $width2) {
+    @if map.has-key($breakpoints, $width) {
+        $width: map.get($breakpoints, $width);
+        $width2: map.get($breakpoints, $width2);
+
+        @media only screen and (min-width: $width) and (max-width: $width2) {
+            @content;
+        }
+    } @else {
+        @warn "No value could be retrieved from `#{$width}`. Available breakpoints are: #{map.keys($breakpoints)}.";
+    }
+}
+
+/*
+tr( duracion, propiedades, delay)
+*/
+@mixin tr($d: 0.5s, $e: all, $delay: 0s) {
+    transition: $e $d ease-out;
+    transition-delay: $delay;
+}
+
+/*
+tre( duracion, propiedades, delay)
+a diferencia de tr(), tre tiene un easign aplicado que hace la animacion mas natural
+*/
+@mixin tre($d: 0.5s, $e: all, $delay: 0s) {
+    transition: $e $d cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition-delay: $delay;
+}
+
+/*
+fade( x, y, defaulttransition, delay );
+Añade transformacion x e y, y opacity 0 al elemento.
+Se pueden pasar valores negativos, por ejemplo, para desplazar x hacia la izquierda
+Tambien se puede pasar un porcentaje
+defaulttransition aplica la variable $transition-default definida en _variables.scss
+delay aplica un delay multiplicando el valor por $transition-default-delay para hacer aparecer los elementos de forma escalonada
+*/
+@mixin fade($x: 0px, $y: 0px, $transition: true, $delay: 0) {
+    opacity: var(--fade-opacity, 0);
+    transform: var(--fade-transform, translateX($x) translateY($y));
+
+    @if $transition {
+        transition: $transition-default;
+    }
+
+    @if $delay >0 {
+        transition-delay: $transition-default-delay * $delay;
+    }
+}
+
+.in {
+    --fade-opacity: 1;
+    --fade-transform: translateX(0px) translateY(0px);
+    --p100: 100%;
+    --p0: 0%;
+    --v1: 1;
+    --v0: 0;
+}
+
+/*
+fadein();
+Aplica transformX(0px), transformY(0px) y opacity 1 para hacer aparecer el objecto
+*/
+@mixin fadein() {
+    opacity: 1;
+    transform: translateX(0px) translateY(0px);
+}
+
+/*
+Se usa igual que fade, pero crea un loop para animar los elementos de forma ordenada
+*/
+@mixin loop_fade(
+    $x: 0px,
+    $y: 0px,
+    $transition: true,
+    $initial-position: 0,
+    $quantity: 20
+) {
+    @for $i from 1 through $quantity {
+        &:nth-child(#{$i}) {
+            @include fade($x, $y, $transition, $i + $initial-position);
+        }
+    }
+}
+
+@function clamp-calc(
+    $min-width,
+    $max-width,
+    $size-at-min-width,
+    $size-at-max-width
+) {
+    $slope: calc(
+        ($size-at-max-width - $size-at-min-width) / ($max-width - $min-width)
+    );
+    $slope: calc(math.round($slope * 1000) / 1000);
+    $y-axis-intersection: calc(-1 * $min-width * $slope + $size-at-min-width);
+    $y-axis-intersection: calc(math.round($y-axis-intersection * 1000) / 1000);
+    $return-value: clamp(
+        #{$size-at-min-width},
+        #{$y-axis-intersection} + #{$slope} * 100vw,
+        #{$size-at-max-width}
+    );
+    @return $return-value;
+}
+
+@function rv($small, $large, $smallbp: "mobile-v", $largebp: "tablet-h") {
+    @return clamp-calc(
+        map.get($breakpoints, $smallbp),
+        map.get($breakpoints, $largebp),
+        $small,
+        $large
+    );
+}
+
+/*
+Use:
+@if editor() {
+  font-size: 90px;
+}
+*/
+
+@function editor() {
+    @return variable-exists("editor");
+}

@@ -1,0 +1,26 @@
+@use "sass:map";
+@use "../../../scss/abstracts/variables" as *;
+@use "../../../scss/abstracts/functions" as *;
+
+.container {
+    max-width: map.get($site-widths, max-width) + $site-padding * 2;
+    margin: 0 auto;
+    padding: 0 $site-padding;
+    width: 100%;
+    @include responsive("mobile-h") {
+        padding: 0 $site-padding-mobile;
+    }
+
+    & + & {
+        margin-top: rv(20px, 30px);
+    }
+
+    &.flex {
+        display: flex;
+        gap: 32px;
+        justify-content: space-between;
+        @include responsive("tablet-h") {
+            flex-direction: column;
+        }
+    }
+}

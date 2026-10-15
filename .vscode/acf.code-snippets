@@ -1,0 +1,59 @@
+{
+	"acf_get_field": {
+		"scope": "php,html",
+		"prefix": "get_field",
+		"body": [
+			"<?php if ( $${1:fieldname} = get_field('${1:fieldname}') ) echo wp_kses_post($${1:fieldname});?>"
+		],
+		"description": "get_field"
+	},
+	"acf_var": {
+		"scope": "php,html",
+		"prefix": "acf_var",
+		"body": [
+			"$${1:fieldname} = get_field('${1:fieldname}');"
+		],
+		"description": "get_field"
+	},
+	"acf_get_field_options": {
+		"scope": "php,html",
+		"prefix": "get_field_options",
+		"body": [
+			"<?php if ( $${1:fieldname} = get_field('${1:fieldname}','options') ) echo $${1:fieldname};?>"
+		],
+		"description": "get_field_options"
+	},
+	"acf_if_get_field": {
+		"scope": "php,html",
+		"prefix": "if get_field",
+		"body": [
+		  	"<?php if ( $${1:fieldname} = get_field('${1:fieldname}') ) {?>"
+		],
+		"description": "if (get_field)"
+	},	
+	"acf_repeater": {
+		"scope": "php,html",
+		"prefix": "repeater",
+		"body": [
+		  	"<?php ",
+		  	"if ( $${1:fieldname} = get_field('${1:fieldname}') ) {",
+		  	"  if ( is_array($${1:fieldname}) AND !empty($${1:fieldname}) ){",
+		  	"    foreach( $${1:fieldname} AS $$k => $$i ) { ?>",
+			"//code",
+		  	"<?php ",
+		  	"    }",
+		  	"  }",
+		  	"}",
+		  	"?>"
+		],
+		"description": "repeater"
+	},
+	"acf_image": {
+		"scope": "php,html",
+		"prefix": "image",
+		"body": [
+		  	"<?php get_template_part( 'modules/components/image', '', [ 'image' => $${1:fieldname} ] );  ?>"
+		],
+		"description": "acf_image"
+	}
+}

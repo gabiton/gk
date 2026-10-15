@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "favorites.resources": [
+    {
+      "filePath": "wp-content\\themes\\palermo\\modules",
+      "group": "Default"
+    }
+  ],
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "htmlEndTagLabels.labelColor": ""
+}

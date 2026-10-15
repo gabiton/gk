@@ -1,0 +1,94 @@
+{
+	"loop_elements": {
+		"scope": "php,html",
+		"prefix": "loop_elements",
+		"body": [
+		  	"${1|<?php the_permalink(); ?>,<?php the_title(); ?>,<?php the_time('d-m-y') ?>,<?php the_excerpt(); ?>,<?php the_content(); ?>,<?php if ( has_post_thumbnail() ) the_post_thumbnail('large'); ?>|}"
+		],
+		"description": "loop_elements"
+	},
+	"loop_top": {
+		"scope": "php,html",
+		"prefix": "loop_top",
+		"body": [
+		  	"<?php if (have_posts()) : ?>",
+			"<?php while (have_posts()) : the_post(); ?>"
+		],
+		"description": "loop_top"
+	},
+	"loop_bottom": {
+		"scope": "php,html",
+		"prefix": "loop_bottom",
+		"body": [
+		  	"<?php endwhile; ?>",
+			"<?php else : ?>",
+			"<?php endif; ?>"
+		],
+		"description": "loop_bottom"
+	},
+	"get_page": {
+		"scope": "php",
+		"prefix": "get_page",
+		"body": [
+		  	"$idpost = 1;",
+			"$post = get_page($idpost);",
+			"setup_postdata($post);",
+		],
+		"description": "get_page"
+	},
+	"get_posts": {
+		"scope": "php",
+		"prefix": "get_posts",
+		"body": [
+			"$$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;",
+			"$$args = [ 'posts_per_page' => 10, 'post_type'=> \"post\", 'paged' => $$paged ];",
+			"$$loop = new WP_Query( $$args );",
+			"while ( $$loop->have_posts() ) : $$loop->the_post(); ?>",
+			"",
+			"<?php endwhile;?>",
+			"wp_reset_postdata();"
+		],
+		"description": "get_posts"
+	},
+	"ajax_action": {
+		"scope": "php",
+		"prefix": "ajax_action",
+		"body": [
+		  	"add_action( 'wp_ajax_${actionname}', '${actionname}_callback' );",
+			"add_action( \"wp_ajax_nopriv_${actionname}\", \"${actionname}_callback\" );",
+			"function ${actionname}_callback() {",
+			"}",
+		],
+		"description": "ajax_action"
+	},
+	"post_action": {
+		"scope": "php",
+		"prefix": "post_action",
+		"body": [
+		  	"add_action( 'wp_post_${actionname}', '${actionname}_callback' );",
+			"add_action( \"wp_post_nopriv_${actionname}\", \"${actionname}_callback\" );",
+			"function ${actionname}_callback() {",
+			"}",
+		],
+		"description": "post_action"
+	},
+	"icon_part": {
+		"scope": "html, php",
+		"prefix": "icon_part",
+		"body": [
+		  	"<?php get_template_part('modules/components/icon',null,['icon'=>'${icon}']); ?>",
+		],
+		"description": "icon_part"
+	},
+	"button_part": {
+		"scope": "html, php",
+		"prefix": "button_part",
+		"body": [
+		  	"<?php get_template_part('modules/components/button/button',null,['button'=>'${button}', 'style' => '']); ?>",
+		],
+		"description": "button_part"
+	},
+	
+
+	
+}

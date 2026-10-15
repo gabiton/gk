@@ -1,0 +1,42 @@
+{
+	"css_responsive": {
+		"prefix": "@responsive",
+		"body": [
+		  	"@include responsive('${1|menu-bp,mobile-s,mobile-v,mobile-h,tablet-v,tablet-h,desktop-s,desktop|}'){",
+		  	"}"
+		],
+		"description": "css_responsive"
+	},
+	"php_<?php } ?>": {
+		"scope": "php,html",
+		"prefix": "}}",
+		"body": [
+			"<?php } ?>"
+		],
+		"description": "<?php } ?>"
+	},
+	"php_echo_variable": {
+		"scope": "php,html",
+		"prefix": "echo",
+		"body": [
+		  	"<?php echo wp_kses_post($${1:variable}); ?>"
+		],
+		"description": "php_echo_vaiable"
+	},
+	"php_session_start": {
+		"scope": "php",
+		"prefix": "session_start",
+		"body": [
+		  	"if (!isset($_SESSION)) session_start();",
+		],
+		"description": "session_start"
+	},
+	"ifempty": {
+		"scope": "php,html",
+		"prefix": "ifempty",
+		"body": [
+		  	"<?php if (!empty($${1:variable})) {?>",
+		],
+		"description": "session_start"
+	},
+}

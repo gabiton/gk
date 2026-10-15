@@ -1,0 +1,77 @@
+@use "../../../scss/block" as *;
+
+.HomeForm {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-top: 4px solid $white;
+    border-bottom: 4px solid $white;
+    @include responsive("menu-bp") {
+        height: auto;
+        padding: 80px 0;
+    }
+    &__bg {
+        @include image-background(rgba($black, 0.3));
+    }
+    .container {
+        position: relative;
+        text-align: center;
+        h2 {
+            text-transform: uppercase;
+            font-weight: 900;
+            color: $white;
+            font-size: rv(50px, 70px);
+            margin-bottom: 40px;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            .field {
+                width: 235px;
+                @include responsive("menu-bp") {
+                    width: calc(50% - 10px);
+                }
+                input {
+                    height: 43px;
+                    background: #e7e7e7;
+                    border-radius: 24px;
+                    width: 100%;
+                    padding: 0 20px;
+                    font-size: 17px;
+                    border: 1px solid #e7e7e7;
+                    transition: 0.3s;
+                    &:focus {
+                        outline: none;
+                        border-color: $green;
+                    }
+                }
+                ::placeholder {
+                    color: #a5a5a5;
+                }
+            }
+            .submit {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                button {
+                    background: $green;
+                    color: $blue;
+                    font-size: 17px;
+                    font-weight: 800;
+                    padding: 0 40px;
+                    height: 43px;
+                    border-radius: 24px;
+                    transition: 0.3s;
+                    &:hover {
+                        color: $green;
+                        background: $blue;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

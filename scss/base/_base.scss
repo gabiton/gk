@@ -1,0 +1,169 @@
+@use "sass:math";
+@use "../abstracts/variables" as *;
+@use "../abstracts/functions" as *;
+@use "../abstracts/mixins" as *;
+
+html {
+    box-sizing: border-box;
+    height: -webkit-fill-available;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body {
+    @include default-font();
+    font-size: 16px;
+    line-height: 1.6;
+    color: $black;
+    background: $lgrey;
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    ul li {
+        list-style: none;
+    }
+
+    p:not(:last-child) {
+        margin-bottom: 20px;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="submit"],
+textarea,
+button {
+    @include default-font();
+    appearance: none;
+    border-radius: 0;
+}
+
+button {
+    background-color: transparent;
+}
+
+select {
+    @include default-font();
+}
+
+// Define max number of font sizes. Dont apply a style if the heading has a heading class
+@for $i from 1 through 6 {
+    h#{$i},
+    .h#{$i} {
+        @include fontsizes(h#{$i});
+    }
+}
+
+a {
+    color: $secondary-color;
+    transition: all 0.3s ease;
+}
+
+b,
+strong,
+strong * {
+    font-weight: 600;
+}
+
+.text_block {
+    @include text_block();
+}
+
+$columns: 12;
+$gap: 20px;
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 calc($gap / -2);
+
+    > * {
+        padding: 0 calc($gap / 2);
+        box-sizing: border-box;
+    }
+
+    &.stretch {
+        align-items: stretch;
+    }
+}
+
+div[class*="col-"] {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+// Base .col-1 a .col-12
+@for $i from 1 through $columns {
+    div.col-#{$i} {
+        width: math.percentage(calc($i / $columns));
+        flex: 0 0 auto;
+    }
+}
+
+.align-center {
+    @include responsiveMin() {
+        align-items: center;
+    }
+}
+
+// Responsive .col-sm-1, .col-md-1, etc.
+@each $bp, $value in $breakpoints-cols {
+    @media (min-width: $value) {
+        @for $i from 1 through $columns {
+            @media (min-width: $value) {
+                div.col-#{$bp}-#{$i} {
+                    width: math.percentage(calc($i / $columns));
+                    flex: 0 0 auto;
+                    //  margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+.block {
+    display: block;
+}
+.mb20 {
+    margin-bottom: 20px;
+}
+.mb40 {
+    margin-bottom: 40px;
+}
+.mb60 {
+    margin-bottom: 60px;
+}
+.mt20 {
+    margin-top: 20px;
+}
+.mt40 {
+    margin-top: 40px;
+}
+.mt60 {
+    margin-top: 60px;
+}
+
+.icon,
+.icon svg {
+    display: block;
+}

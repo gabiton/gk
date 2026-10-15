@@ -1,0 +1,8 @@
+@use "../../../../scss/abstracts/variables" as *;
+@use "../../../../scss/abstracts/functions" as *;
+
+.content{
+    @include responsiveMin('tablet-h'){
+        width: 66%;
+    }
+}

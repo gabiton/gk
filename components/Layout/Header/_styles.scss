@@ -1,0 +1,47 @@
+@use "../../../scss/block" as *;
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba($blue, 0.8);
+    border-bottom: 4px solid $green;
+    z-index: 100;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 64px;
+    }
+    a {
+        color: $white;
+    }
+    &__left {
+        &__logo {
+            width: 209px;
+            display: block;
+        }
+    }
+    &__right {
+        display: flex;
+        align-items: center;
+        gap: 70px;
+    }
+    &__social {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        @include responsive("menu-bp") {
+            display: none;
+        }
+        a {
+            display: block;
+            transition: 0.3s;
+            &:hover {
+                color: $green;
+            }
+        }
+    }
+}

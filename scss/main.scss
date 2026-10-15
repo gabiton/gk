@@ -1,0 +1,25 @@
+@charset 'UTF-8';
+@use "sass:map";
+@use "./abstracts/variables" as *;
+@use "./abstracts/mixins" as *;
+@use "./base/typography";
+@use "./base/base";
+@use "./layout/page";
+@use "./vendors/swiper";
+@use "../components/Layout/Header/styles" as header-styles;
+@use "../components/Layout/Header/Logo/styles" as logo-styles;
+@use "../components/Layout/Header/Search/styles" as search-styles;
+@use "../components/Layout/Header/MobileMenuButton/styles" as mobile-menu-styles;
+@use "../components/Layout/Header/MobileSearchButton/styles" as
+    mobile-search-styles;
+@use "../components/Layout/Menu/styles" as menu-styles;
+@use "../components/Layout/Footer/styles" as footer-styles;
+@use "../components/Layout/Container/styles" as container-styles;
+@use "../components/Layout/Container/Content/styles" as content-styles;
+@use "../components/Layout/Container/Sidebar/styles" as sidebar-styles;
+
+@use "../components/Blocks/HomeHero/_styles" as HomeHero;
+@use "../components/Blocks/HomeForm/_styles" as HomeForm;
+@use "../components/Blocks/EnTodosLados/_styles" as EnTodosLados;
+@use "../components/Blocks/loQueCreo/_styles" as loQueCreo;
+@use "../components/Blocks/SobreMi/_styles" as SobreMi;

@@ -1,0 +1,29 @@
+@use "../../../scss/block" as *;
+
+.HomeHero {
+    height: 100dvh;
+    position: relative;
+    border-bottom: 4px solid $green;
+    &__bg {
+        @include image-background;
+    }
+    .container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+    h1 {
+        font-size: rv(50px, 70px);
+        line-height: 1;
+        color: $green;
+        font-weight: 400;
+        .alt {
+            display: none;
+        }
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
