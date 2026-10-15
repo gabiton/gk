@@ -1,0 +1,76 @@
+{
+  "format": "page",
+  "id": "post",
+  "json": {
+    "Main": {
+      "uid": {
+        "config": {
+          "label": "UID"
+        },
+        "type": "UID"
+      },
+      "slices": {
+        "config": {
+          "choices": {}
+        },
+        "fieldset": "Slice Zone",
+        "type": "Slices"
+      },
+      "title": {
+        "config": {
+          "label": "Título"
+        },
+        "type": "Text"
+      },
+      "featured_image": {
+        "config": {
+          "label": "Foto principal"
+        },
+        "type": "Image"
+      },
+      "excerpt": {
+        "config": {
+          "label": "Excerpt"
+        },
+        "type": "Text"
+      },
+      "body": {
+        "config": {
+          "label": "Contenido",
+          "multi": "paragraph,heading2,heading3,strong,em,hyperlink,list-item,o-list-item"
+        },
+        "type": "StructuredText"
+      }
+    },
+    "SEO & Metadata": {
+      "meta_title": {
+        "config": {
+          "label": "Meta Title",
+          "placeholder": "A title of the page used for social media and search engines"
+        },
+        "type": "Text"
+      },
+      "meta_description": {
+        "config": {
+          "label": "Meta Description",
+          "placeholder": "A brief summary of the page"
+        },
+        "type": "Text"
+      },
+      "meta_image": {
+        "config": {
+          "constraint": {
+            "height": 1260,
+            "width": 2400
+          },
+          "label": "Meta Image",
+          "thumbnails": []
+        },
+        "type": "Image"
+      }
+    }
+  },
+  "label": "Post",
+  "repeatable": true,
+  "status": true
+}
