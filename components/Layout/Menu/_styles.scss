@@ -92,6 +92,10 @@
         gap: 20px;
         align-items: center;
         position: absolute;
+        display: none;
+        @include responsive("menu-bp") {
+            display: flex;
+        }
         a {
             color: $blue2;
             svg {

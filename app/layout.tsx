@@ -4,8 +4,8 @@ import { Header } from "@/components/Layout/Header";
 import { Footer } from "@/components/Layout/Footer";
 export const metadata: Metadata = {
     title: {
-        default: "Nombre del sitio",
-        template: "%s | Nombre del sitio",
+        default: "Gabriel Katopodis",
+        template: "%s | Gabriel Katopodis",
     },
     description: "",
 };
