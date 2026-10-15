@@ -1,0 +1,35 @@
+{
+  "id": "home_hero",
+  "name": "HomeHero",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "",
+      "name": "Default",
+      "primary": {
+        "tagline": {
+          "config": {
+            "label": "Texto del título"
+          },
+          "type": "Text"
+        },
+        "desktop_image": {
+          "config": {
+            "label": "Imagen de escritorio"
+          },
+          "type": "Image"
+        },
+        "mobile_image": {
+          "config": {
+            "label": "Imagen para móvil"
+          },
+          "type": "Image"
+        }
+      },
+      "version": ""
+    }
+  ]
+}
