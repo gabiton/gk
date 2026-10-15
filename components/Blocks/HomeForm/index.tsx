@@ -10,6 +10,7 @@ export const HomeForm = () => {
                     autoPlay
                     muted
                     playsInline
+                    loop
                 ></video>
             </div>
 
