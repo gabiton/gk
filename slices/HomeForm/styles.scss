@@ -47,6 +47,11 @@
                         outline: none;
                         border-color: $green;
                     }
+
+                    &:disabled {
+                        cursor: not-allowed;
+                        opacity: 0.65;
+                    }
                 }
                 ::placeholder {
                     color: #a5a5a5;
@@ -70,8 +75,53 @@
                         background: $blue;
                         cursor: pointer;
                     }
+
+                    &:disabled {
+                        cursor: not-allowed;
+                        opacity: 0.6;
+                    }
                 }
             }
+        }
+
+        .HomeForm__consent {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            color: $white;
+            font-size: 14px;
+
+            label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            input {
+                width: 18px;
+                height: 18px;
+                accent-color: $green;
+            }
+
+            a {
+                color: $white;
+                text-decoration: underline;
+            }
+        }
+
+        .HomeForm__errors,
+        .HomeForm__feedback {
+            width: 100%;
+            margin: 0;
+            color: $white;
+            font-size: 14px;
+        }
+
+        .HomeForm__errors {
+            list-style: none;
         }
     }
 }

@@ -1,5 +1,7 @@
 import { Container } from "@/components/Layout/Container";
 
+import { Form } from "./Form";
+
 type BlockProps = {
     title?: string;
     backgroundVideo?: string;
@@ -31,23 +33,7 @@ export function Block({
 
             <Container>
                 <h2>{title}</h2>
-                <form action="">
-                    <div className="field">
-                        <input type="text" placeholder="Nombre" />
-                    </div>
-                    <div className="field">
-                        <input type="text" placeholder="Correo electrónico" />
-                    </div>
-                    <div className="field">
-                        <input type="text" placeholder="Celular" />
-                    </div>
-                    <div className="field">
-                        <input type="text" placeholder="Municipio" />
-                    </div>
-                    <div className="submit">
-                        <button type="submit">Quiero ser parte</button>
-                    </div>
-                </form>
+                <Form />
             </Container>
         </section>
     );
