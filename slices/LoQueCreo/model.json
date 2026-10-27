@@ -25,33 +25,18 @@
         "items": {
           "config": {
             "fields": {
-              "image": {
+              "post": {
                 "config": {
-                  "label": "Imagen"
-                },
-                "type": "Image"
-              },
-              "title": {
-                "config": {
-                  "label": "Título"
-                },
-                "type": "Text"
-              },
-              "description": {
-                "config": {
-                  "label": "Texto",
-                  "single": "paragraph"
-                },
-                "type": "StructuredText"
-              },
-              "link": {
-                "config": {
-                  "label": "Link"
+                  "label": "Noticia",
+                  "select": "document",
+                  "customtypes": [
+                    "post"
+                  ]
                 },
                 "type": "Link"
               }
             },
-            "label": "Items"
+            "label": "Noticias"
           },
           "type": "Group"
         }
