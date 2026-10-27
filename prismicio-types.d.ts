@@ -436,44 +436,14 @@ export type HomeHeroSlice = prismic.SharedSlice<"home_hero", HomeHeroSliceVariat
  */
 export interface LoQueCreoSliceDefaultPrimaryItemsItem {
 	/**
-	 * Imagen field in *LoQueCreo → Default → Primary → Items*
+	 * Noticia field in *LoQueCreo → Default → Primary → Items*
 	 *
-	 * - **Field Type**: Image
+	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: lo_que_creo.default.primary.items[].image
-	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 * - **API ID Path**: lo_que_creo.default.primary.items[].post
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
 	 */
-	image: prismic.ImageField<never>;
-	
-	/**
-	 * Título field in *LoQueCreo → Default → Primary → Items*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: lo_que_creo.default.primary.items[].title
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	title: prismic.KeyTextField;
-	
-	/**
-	 * Texto field in *LoQueCreo → Default → Primary → Items*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: lo_que_creo.default.primary.items[].description
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	description: prismic.RichTextField;
-	
-	/**
-	 * Link field in *LoQueCreo → Default → Primary → Items*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: lo_que_creo.default.primary.items[].link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	post: prismic.ContentRelationshipField<"post">;
 }
 
 /**
