@@ -179,7 +179,9 @@ export function Block({
                                             aria-label={`Reproducir video de ${item.channel}`}
                                             onClick={() => {
                                                 if (item.videoUrl)
-                                                    setActiveVideo(item.videoUrl);
+                                                    setActiveVideo(
+                                                        item.videoUrl,
+                                                    );
                                             }}
                                         >
                                             Reproducir
@@ -188,7 +190,9 @@ export function Block({
                                     <div className="EnTodosLados__videos__item__content">
                                         <div className="EnTodosLados__videos__item__content__left">
                                             <h3>{item.channel}</h3>
-                                            <div className="date">{item.date}</div>
+                                            <div className="date">
+                                                {item.date}
+                                            </div>
                                         </div>
                                         <div
                                             className="EnTodosLados__videos__item__content__right"
@@ -209,6 +213,65 @@ export function Block({
                 <div className="hr"></div>
 
                 <div className="EnTodosLados__tweets">
+                    <blockquote
+                        className="twitter-tweet"
+                        data-conversation="none"
+                        data-dnt="true"
+                    >
+                        <p lang="es" dir="ltr">
+                            La Ruta Provincial 24, en{" "}
+                            <a href="https://x.com/hashtag/Moreno?src=hash&amp;ref_src=twsrc%5Etfw">
+                                #Moreno
+                            </a>
+                            , es una obra fundamental para conectar todo este
+                            corredor de la zona oeste y transformar la vida
+                            productiva y social de estos barrios.
+                            <br />
+                            <br />
+                            La doble calzada y la iluminación van a mejorar la
+                            circulación y la seguridad, y van a contribuir a que
+                            Moreno…{" "}
+                            <a href="https://t.co/CMhtjLBF5J">
+                                pic.twitter.com/CMhtjLBF5J
+                            </a>
+                        </p>
+                        &mdash; Gabriel Katopodis (@gkatopodis){" "}
+                        <a href="https://x.com/gkatopodis/status/2115169681161982218?ref_src=twsrc%5Etfw">
+                            October 27, 2026
+                        </a>
+                    </blockquote>{" "}
+                    <blockquote
+                        className="twitter-tweet"
+                        data-conversation="none"
+                        data-dnt="true"
+                    >
+                        <p lang="es" dir="ltr">
+                            La Ruta Provincial 24, en{" "}
+                            <a href="https://x.com/hashtag/Moreno?src=hash&amp;ref_src=twsrc%5Etfw">
+                                #Moreno
+                            </a>
+                            , es una obra fundamental para conectar todo este
+                            corredor de la zona oeste y transformar la vida
+                            productiva y social de estos barrios.
+                            <br />
+                            <br />
+                            La doble calzada y la iluminación van a mejorar la
+                            circulación y la seguridad, y van a contribuir a que
+                            Moreno…{" "}
+                            <a href="https://t.co/CMhtjLBF5J">
+                                pic.twitter.com/CMhtjLBF5J
+                            </a>
+                        </p>
+                        &mdash; Gabriel Katopodis (@gkatopodis){" "}
+                        <a href="https://x.com/gkatopodis/status/2115145489968734589?ref_src=twsrc%5Etfw">
+                            October 27, 2026
+                        </a>
+                    </blockquote>{" "}
+                    <script
+                        async
+                        src="https://platform.x.com/widgets.js"
+                        charSet="utf-8"
+                    ></script>
                     <div className="EnTodosLados__tweet">
                         <div className="EnTodosLados__tweet__top">
                             <div className="EnTodosLados__tweet__top__xlogo">
