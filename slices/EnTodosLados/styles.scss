@@ -297,6 +297,109 @@
         @include responsive("menu-bp") {
             grid-template-columns: repeat(1, 1fr);
         }
+
+        &--slider {
+            display: block;
+            position: relative;
+
+            @include responsive("menu-bp") {
+                padding-bottom: 50px;
+            }
+
+            .swiper {
+                width: 100%;
+                @include responsiveMin(" ") {
+                    padding-left: 80px;
+                    padding-right: 80px;
+                    &:before,
+                    &:after {
+                        width: 80px;
+                        height: 100%;
+                        content: "";
+                        position: absolute;
+                        background: linear-gradient(
+                            to right,
+                            #f2f2f2 0%,
+                            rgba(#f2f2f2, 0) 100%
+                        );
+                        left: 0;
+                        top: 0;
+                        z-index: 10;
+                    }
+                    &:after {
+                        left: unset;
+                        right: 0;
+                        transform: scaleX(-1);
+                    }
+                }
+            }
+
+            .swiper-slide {
+                height: auto;
+            }
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                width: 50px;
+                aspect-ratio: 1;
+                border-radius: 100%;
+                background: $blue;
+                display: flex;
+                transition: 0.3s;
+                top: 50% !important;
+                z-index: 11;
+                margin-top: -55px !important;
+                @include responsive("menu-bp") {
+                    display: none;
+                }
+                &:hover {
+                    background: $green;
+                }
+                svg {
+                    width: 10px;
+                    height: auto;
+                    display: block;
+                    path {
+                        fill: $white;
+                        stroke: $white;
+                        stroke-width: 2px;
+                    }
+                }
+                &:after {
+                    display: none;
+                }
+            }
+
+            .swiper-pagination-bullets.swiper-pagination-horizontal {
+                position: absolute;
+                top: 100%;
+                margin-top: 30px;
+                left: 0;
+                bottom: unset;
+                display: none;
+                @include responsive("menu-bp") {
+                    display: flex !important;
+                    top: auto;
+                    bottom: 0;
+                    margin-top: 0;
+                    justify-content: flex-start;
+                    width: 100%;
+                    z-index: 12;
+                }
+                .swiper-pagination-bullet {
+                    justify-content: flex-start;
+                    width: 10px;
+                    height: 10px;
+                    border: 1px solid $blue;
+                    background: $white;
+                    opacity: 1;
+                    transition: 0.3s;
+                    &-active {
+                        background: $blue;
+                    }
+                }
+            }
+        }
     }
     &__tweet {
         background: $white;

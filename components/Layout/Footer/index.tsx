@@ -1,37 +1,43 @@
 import { Icon } from "@/components/Icon";
+import {
+    defaultNavigationItems,
+    defaultSocialLinks,
+    type NavigationItem,
+    type SocialLink,
+} from "../siteSettings";
 
-const blockClass = "footer";
-export function Footer() {
+export function Footer({
+    menuItems = defaultNavigationItems,
+    socialLinks = defaultSocialLinks,
+}: {
+    menuItems?: NavigationItem[];
+    socialLinks?: SocialLink[];
+}) {
     return (
         <footer className="footer">
             <div className="container">
                 <Icon icon="logohero" />
                 <div className="footer__col">
-                    <p>
-                        Lorem ipsum lorem <br /> ipsum lore lorem ipsum{" "}
-                    </p>
+                    <ul>
+                        {menuItems.map((item, index) => (
+                            <li key={`${item.label}-${index}`}>
+                                <a href={item.href}>{item.label}</a>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
                 <div className="footer__col social">
-                    <a href="">
-                        <Icon icon="facebook" />
-                        @GKatopodis
-                    </a>
-                    <a href="">
-                        <Icon icon="x" />
-                        @GabrielKatopodis
-                    </a>
-                    <a href="">
-                        <Icon icon="instagram" />
-                        @GabrielKatopodis
-                    </a>
-                    <a href="">
-                        <Icon icon="youtube" />
-                        @Gabriel_katopodis
-                    </a>
-                    <a href="">
-                        <Icon icon="tiktok" />
-                        @GKatopodis
-                    </a>
+                    {socialLinks.map((social) => (
+                        <a
+                            href={social.url}
+                            key={social.network}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <Icon icon={social.network} />
+                            {social.handle || social.network}
+                        </a>
+                    ))}
                 </div>
             </div>
         </footer>

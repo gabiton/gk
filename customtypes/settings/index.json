@@ -1,0 +1,66 @@
+{
+  "format": "page",
+  "id": "settings",
+  "label": "Settings",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Menu": {
+      "menu_items": {
+        "type": "Group",
+        "config": {
+          "label": "Enlaces del menú",
+          "fields": {
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "Texto del enlace"
+              }
+            },
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Enlace"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Social media": {
+      "social_links": {
+        "type": "Group",
+        "config": {
+          "label": "Redes sociales",
+          "fields": {
+            "network": {
+              "type": "Select",
+              "config": {
+                "label": "Red social",
+                "options": [
+                  "facebook",
+                  "x",
+                  "instagram",
+                  "youtube",
+                  "tiktok"
+                ]
+              }
+            },
+            "url": {
+              "type": "Link",
+              "config": {
+                "label": "URL del perfil"
+              }
+            },
+            "handle": {
+              "type": "Text",
+              "config": {
+                "label": "Usuario para mostrar"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

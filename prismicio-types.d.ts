@@ -210,7 +210,103 @@ interface PostDocumentData {
  */
 export type PostDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PostDocumentData>, "post", Lang>;
 
-export type AllDocumentTypes = HomepageDocument | PostDocument;
+/**
+ * Item in *Settings → Enlaces del menú*
+ */
+export interface SettingsDocumentDataMenuItemsItem {
+	/**
+	 * Texto del enlace field in *Settings → Enlaces del menú*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.menu_items[].label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	label: prismic.KeyTextField;
+	
+	/**
+	 * Enlace field in *Settings → Enlaces del menú*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.menu_items[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Item in *Settings → Redes sociales*
+ */
+export interface SettingsDocumentDataSocialLinksItem {
+	/**
+	 * Red social field in *Settings → Redes sociales*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.social_links[].network
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	network: prismic.SelectField<"facebook" | "x" | "instagram" | "youtube" | "tiktok">;
+	
+	/**
+	 * URL del perfil field in *Settings → Redes sociales*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.social_links[].url
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	url: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Usuario para mostrar field in *Settings → Redes sociales*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.social_links[].handle
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	handle: prismic.KeyTextField;
+}
+
+/**
+ * Content for Settings documents
+ */
+interface SettingsDocumentData {
+	/**
+	 * Enlaces del menú field in *Settings*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.menu_items[]
+	 * - **Tab**: Menu
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	menu_items: prismic.GroupField<Simplify<SettingsDocumentDataMenuItemsItem>>;/**
+	 * Redes sociales field in *Settings*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.social_links[]
+	 * - **Tab**: Social media
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	social_links: prismic.GroupField<Simplify<SettingsDocumentDataSocialLinksItem>>;
+}
+
+/**
+ * Settings document from Prismic
+ *
+ * - **API ID**: `settings`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
+
+export type AllDocumentTypes = HomepageDocument | PostDocument | SettingsDocument;
 
 /**
  * Item in *EnTodosLados → Default → Primary → Videos*
@@ -275,6 +371,7 @@ export interface EnTodosLadosSliceDefaultPrimaryTweetsItem {
 	 * URL del tweet field in *EnTodosLados → Default → Primary → Tweets*
 	 *
 	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
 	 * - **API ID Path**: en_todos_lados.default.primary.tweets[].tweet_url
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
@@ -319,6 +416,7 @@ export interface EnTodosLadosSliceDefaultPrimary {
 	 * Tweets field in *EnTodosLados → Default → Primary*
 	 *
 	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
 	 * - **API ID Path**: en_todos_lados.default.primary.tweets[]
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
@@ -455,11 +553,11 @@ type HomeHeroSliceVariation = HomeHeroSliceDefault
 export type HomeHeroSlice = prismic.SharedSlice<"home_hero", HomeHeroSliceVariation>;
 
 /**
- * Item in *LoQueCreo → Default → Primary → Items*
+ * Item in *LoQueCreo → Default → Primary → Noticias*
  */
 export interface LoQueCreoSliceDefaultPrimaryItemsItem {
 	/**
-	 * Noticia field in *LoQueCreo → Default → Primary → Items*
+	 * Noticia field in *LoQueCreo → Default → Primary → Noticias*
 	 *
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: *None*
@@ -494,7 +592,7 @@ export interface LoQueCreoSliceDefaultPrimary {
 	view_all_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 	
 	/**
-	 * Items field in *LoQueCreo → Default → Primary*
+	 * Noticias field in *LoQueCreo → Default → Primary*
 	 *
 	 * - **Field Type**: Group
 	 * - **Placeholder**: *None*
@@ -641,9 +739,14 @@ declare module "@prismicio/client" {
 			PostDocument,
 			PostDocumentData,
 			PostDocumentDataSlicesSlice,
+			SettingsDocument,
+			SettingsDocumentData,
+			SettingsDocumentDataMenuItemsItem,
+			SettingsDocumentDataSocialLinksItem,
 			AllDocumentTypes,
 			EnTodosLadosSlice,
 			EnTodosLadosSliceDefaultPrimaryVideosItem,
+			EnTodosLadosSliceDefaultPrimaryTweetsItem,
 			EnTodosLadosSliceDefaultPrimary,
 			EnTodosLadosSliceVariation,
 			EnTodosLadosSliceDefault,

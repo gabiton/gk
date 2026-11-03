@@ -61,26 +61,6 @@
             padding: 10px 24px;
         }
 
-        ul {
-            background: #f2f2f2;
-            max-height: 0;
-            overflow: hidden;
-            transition: 0.3s;
-            opacity: 0;
-            li:not(:last-child) {
-                border-bottom: 2px solid $green;
-            }
-            a {
-                font-size: 15px;
-                padding: 8px 24px;
-            }
-        }
-        li.open {
-            ul {
-                max-height: 500px;
-                opacity: 1;
-            }
-        }
     }
     &__social {
         color: $blue2;

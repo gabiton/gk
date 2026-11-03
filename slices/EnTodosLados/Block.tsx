@@ -42,9 +42,12 @@ function getYouTubeEmbedUrl(videoUrl: string) {
 function getValidTweetUrl(rawUrl: string) {
     try {
         const url = new URL(rawUrl);
-        const validHost = ["x.com", "www.x.com", "twitter.com", "www.twitter.com"].includes(
-            url.hostname.toLowerCase(),
-        );
+        const validHost = [
+            "x.com",
+            "www.x.com",
+            "twitter.com",
+            "www.twitter.com",
+        ].includes(url.hostname.toLowerCase());
         const match = url.pathname.match(/^\/([^/]+)\/status\/(\d+)/);
 
         if (!validHost || !match) return null;
@@ -67,11 +70,22 @@ export function Block({
 }) {
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
     const [currentKilometers, setCurrentKilometers] = useState(kilometers);
-    const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(mockGalleryItems);
+    const [galleryItems, setGalleryItems] =
+        useState<GalleryItem[]>(mockGalleryItems);
     const kilometerDigits = currentKilometers.toLocaleString("es-AR");
     const tweetUrls = tweets
         .map(getValidTweetUrl)
         .filter((url): url is string => Boolean(url));
+    const renderTweet = (url: string) => (
+        <blockquote
+            className="twitter-tweet"
+            data-conversation="none"
+            data-cards="hidden"
+            data-dnt="true"
+        >
+            <a href={url}>Ver esta publicación en X</a>
+        </blockquote>
+    );
 
     useEffect(() => {
         setCurrentKilometers(kilometers);
@@ -82,34 +96,42 @@ export function Block({
 
         fetch("/api/instagram/media")
             .then((response) => {
-                if (!response.ok) throw new Error("Instagram media is unavailable.");
+                if (!response.ok)
+                    throw new Error("Instagram media is unavailable.");
                 return response.json();
             })
-            .then((result: {
-                data?: Array<{
-                    id: string;
-                    caption?: string;
-                    media_type?: string;
-                    media_url?: string;
-                    thumbnail_url?: string;
-                    permalink?: string;
-                    comments_count?: number;
-                }>;
-            }) => {
-                if (cancelled || !result.data?.length) return;
-                const items = result.data
-                    .filter((item) => item.media_url || item.thumbnail_url)
-                    .map((item) => ({
-                        id: item.id,
-                        image: item.media_type === "VIDEO"
-                            ? item.thumbnail_url || item.media_url || ""
-                            : item.media_url || item.thumbnail_url || "",
-                        comments: item.comments_count ?? 0,
-                        permalink: item.permalink || "",
-                        alt: item.caption?.trim() || "Publicación de Instagram",
-                    }));
-                if (items.length) setGalleryItems(items);
-            })
+            .then(
+                (result: {
+                    data?: Array<{
+                        id: string;
+                        caption?: string;
+                        media_type?: string;
+                        media_url?: string;
+                        thumbnail_url?: string;
+                        permalink?: string;
+                        comments_count?: number;
+                    }>;
+                }) => {
+                    if (cancelled || !result.data?.length) return;
+                    const items = result.data
+                        .filter((item) => item.media_url || item.thumbnail_url)
+                        .map((item) => ({
+                            id: item.id,
+                            image:
+                                item.media_type === "VIDEO"
+                                    ? item.thumbnail_url || item.media_url || ""
+                                    : item.media_url ||
+                                      item.thumbnail_url ||
+                                      "",
+                            comments: item.comments_count ?? 0,
+                            permalink: item.permalink || "",
+                            alt:
+                                item.caption?.trim() ||
+                                "Publicación de Instagram",
+                        }));
+                    if (items.length) setGalleryItems(items);
+                },
+            )
             .catch(() => {
                 // Keep the local mock gallery visible until Instagram is connected.
             });
@@ -190,7 +212,7 @@ export function Block({
                                     ),
                                 )}
                         </span>
-                    </div>
+                    </div>{" "}
                     km
                     <span className="line2">{title}</span>
                 </h2>
@@ -199,7 +221,11 @@ export function Block({
                     {galleryItems.map((item) => (
                         <div className="EnTodosLados__item" key={item.id}>
                             {item.permalink ? (
-                                <a href={item.permalink} target="_blank" rel="noreferrer">
+                                <a
+                                    href={item.permalink}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     <img src={item.image} alt={item.alt} />
                                 </a>
                             ) : (
@@ -281,18 +307,35 @@ export function Block({
 
                 <div className="hr"></div>
 
-                <div className="EnTodosLados__tweets">
-                    {tweetUrls.map((url) => (
-                        <blockquote
-                            className="twitter-tweet"
-                            data-conversation="none"
-                            data-cards="hidden"
-                            data-dnt="true"
-                            key={url}
+                <div
+                    className={`EnTodosLados__tweets${
+                        tweetUrls.length > 3 ? " EnTodosLados__tweets--slider" : ""
+                    }`}
+                >
+                    {tweetUrls.length > 3 ? (
+                        <Swiper
+                            modules={[Navigation, Pagination]}
+                            navigation
+                            pagination={{ clickable: true }}
+                            slidesPerView={3}
+                            spaceBetween={24}
+                            breakpoints={{
+                                0: { slidesPerView: 1 },
+                                640: { slidesPerView: 2 },
+                                1024: { slidesPerView: 3 },
+                            }}
                         >
-                            <a href={url}>Ver esta publicación en X</a>
-                        </blockquote>
-                    ))}
+                            {tweetUrls.map((url) => (
+                                <SwiperSlide key={url}>
+                                    {renderTweet(url)}
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    ) : (
+                        tweetUrls.map((url) => (
+                            <div key={url}>{renderTweet(url)}</div>
+                        ))
+                    )}
                     {tweetUrls.length > 0 && (
                         <Script
                             src="https://platform.x.com/widgets.js"

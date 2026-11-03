@@ -1,8 +1,20 @@
 import Link from "next/link";
 import { Menu } from "../Menu";
 import { Icon } from "@/components/Icon";
+import {
+    defaultNavigationItems,
+    defaultSocialLinks,
+    type NavigationItem,
+    type SocialLink,
+} from "../siteSettings";
 
-export const Header = () => {
+export const Header = ({
+    menuItems = defaultNavigationItems,
+    socialLinks = defaultSocialLinks,
+}: {
+    menuItems?: NavigationItem[];
+    socialLinks?: SocialLink[];
+}) => {
     return (
         <header className="header">
             <div className="container">
@@ -14,23 +26,19 @@ export const Header = () => {
 
                 <div className="header__right">
                     <div className="header__social">
-                        <a href="">
-                            <Icon icon="facebook" />
-                        </a>
-                        <a href="">
-                            <Icon icon="x" />
-                        </a>
-                        <a href="">
-                            <Icon icon="instagram" />
-                        </a>
-                        <a href="">
-                            <Icon icon="youtube" />
-                        </a>
-                        <a href="">
-                            <Icon icon="tiktok" />
-                        </a>
+                        {socialLinks.map((social) => (
+                            <a
+                                href={social.url}
+                                aria-label={social.network}
+                                key={social.network}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <Icon icon={social.network} />
+                            </a>
+                        ))}
                     </div>
-                    <Menu></Menu>
+                    <Menu items={menuItems} socialLinks={socialLinks} />
                 </div>
             </div>
         </header>

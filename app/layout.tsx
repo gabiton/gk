@@ -3,7 +3,12 @@ import "../scss/main.scss";
 import { Header } from "@/components/Layout/Header";
 import { Footer } from "@/components/Layout/Footer";
 import { PrismicPreview } from "@prismicio/next";
-import { repositoryName } from "@/prismicio";
+import { createClient, repositoryName } from "@/prismicio";
+import {
+    defaultNavigationItems,
+    defaultSocialLinks,
+    mapSiteSettings,
+} from "@/components/Layout/siteSettings";
 export const metadata: Metadata = {
     title: {
         default: "Gabriel Katopodis",
@@ -12,11 +17,23 @@ export const metadata: Metadata = {
     description: "",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    let siteSettings = {
+        menuItems: defaultNavigationItems,
+        socialLinks: defaultSocialLinks,
+    };
+
+    try {
+        const settings = await createClient().getSingle("settings");
+        siteSettings = mapSiteSettings(settings.data);
+    } catch {
+        // Use the local defaults until the Settings singleton is published.
+    }
+
     return (
         <html lang="es">
             <head>
@@ -28,9 +45,15 @@ export default function RootLayout({
                 />
             </head>
             <body>
-                <Header></Header>
+                <Header
+                    menuItems={siteSettings.menuItems}
+                    socialLinks={siteSettings.socialLinks}
+                />
                 {children}
-                <Footer></Footer>
+                <Footer
+                    menuItems={siteSettings.menuItems}
+                    socialLinks={siteSettings.socialLinks}
+                />
                 <PrismicPreview repositoryName={repositoryName} />
             </body>
         </html>
