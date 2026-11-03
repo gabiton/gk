@@ -33,7 +33,7 @@
             .field {
                 width: 235px;
                 @include responsive("menu-bp") {
-                    width: calc(50% - 10px);
+                    width: 100%;
                 }
                 input {
                     height: 43px;

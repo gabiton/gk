@@ -130,35 +130,33 @@ export default async function PostPage({ params }: PostPageProps) {
                                     <Link
                                         className="postsArchive__card__link"
                                         href={`/noticias/${relatedPost.uid}`}
-                                    >
-                                        <figure className="postsArchive__card__image">
-                                            {isFilled.image(
-                                                relatedPost.data.featured_image,
-                                            ) ? (
-                                                <PrismicNextImage
-                                                    field={
-                                                        relatedPost.data
-                                                            .featured_image
-                                                    }
-                                                    alt=""
-                                                    fill
-                                                    sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
-                                                />
-                                            ) : (
-                                                <span aria-hidden="true" />
-                                            )}
-                                        </figure>
-                                        <h3>
-                                            {relatedPost.data.title ||
-                                                "Sin título"}
-                                        </h3>
-                                        {relatedPost.data.excerpt && (
-                                            <p>{relatedPost.data.excerpt}</p>
+                                    ></Link>
+                                    <figure className="postsArchive__card__image">
+                                        {isFilled.image(
+                                            relatedPost.data.featured_image,
+                                        ) ? (
+                                            <PrismicNextImage
+                                                field={
+                                                    relatedPost.data
+                                                        .featured_image
+                                                }
+                                                alt=""
+                                                fill
+                                                sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                                            />
+                                        ) : (
+                                            <span aria-hidden="true" />
                                         )}
-                                        <span className="postsArchive__card__readMore">
-                                            Leer más
-                                        </span>
-                                    </Link>
+                                    </figure>
+                                    <h3>
+                                        {relatedPost.data.title || "Sin título"}
+                                    </h3>
+                                    {relatedPost.data.excerpt && (
+                                        <p>{relatedPost.data.excerpt}</p>
+                                    )}
+                                    <span className="postsArchive__card__readMore">
+                                        Leer más
+                                    </span>
                                 </article>
                             ))}
                         </div>

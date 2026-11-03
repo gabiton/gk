@@ -31,31 +31,28 @@ export default async function NoticiasArchive() {
                                     <Link
                                         className="postsArchive__card__link"
                                         href={`/noticias/${post.uid}`}
-                                    >
-                                        <figure className="postsArchive__card__image">
-                                            {isFilled.image(
-                                                post.data.featured_image,
-                                            ) ? (
-                                                <PrismicNextImage
-                                                    field={
-                                                        post.data.featured_image
-                                                    }
-                                                    alt=""
-                                                    fill
-                                                    sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
-                                                />
-                                            ) : (
-                                                <span aria-hidden="true" />
-                                            )}
-                                        </figure>
-                                        <h2>{title}</h2>
-                                        {post.data.excerpt && (
-                                            <p>{post.data.excerpt}</p>
+                                    ></Link>
+                                    <figure className="postsArchive__card__image">
+                                        {isFilled.image(
+                                            post.data.featured_image,
+                                        ) ? (
+                                            <PrismicNextImage
+                                                field={post.data.featured_image}
+                                                alt=""
+                                                fill
+                                                sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                                            />
+                                        ) : (
+                                            <span aria-hidden="true" />
                                         )}
-                                        <span className="postsArchive__card__readMore">
-                                            Leer más
-                                        </span>
-                                    </Link>
+                                    </figure>
+                                    <h2>{title}</h2>
+                                    {post.data.excerpt && (
+                                        <p>{post.data.excerpt}</p>
+                                    )}
+                                    <span className="postsArchive__card__readMore">
+                                        Leer más
+                                    </span>
                                 </article>
                             );
                         })}

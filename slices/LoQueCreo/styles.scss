@@ -118,7 +118,7 @@
             justify-content: center;
             width: 100%;
             @include responsive("menu-bp") {
-                padding-bottom: 80px;
+                padding: 30px 30px 70px;
             }
             h2 {
                 font-weight: 900;
@@ -134,6 +134,10 @@
                 position: absolute;
                 bottom: 40px;
                 left: 40px;
+                @include responsive("menu-bp") {
+                    left: 30px;
+                    bottom: 30px;
+                }
             }
         }
         figure {

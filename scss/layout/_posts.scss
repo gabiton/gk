@@ -16,7 +16,7 @@
     &__grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 30px 24px;
+        gap: 60px 24px;
 
         @include responsive("menu-bp") {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -28,17 +28,20 @@
     }
 
     &__card {
+        display: flex;
+        flex-direction: column;
+        position: relative;
         &__link {
-            display: block;
-            height: 100%;
-            color: $blue;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+        }
 
-            &:hover {
-                .postsArchive__card__readMore,
-                h2,
-                h3 {
-                    color: $green;
-                }
+        &:hover {
+            .postsArchive__card__readMore,
+            h2,
+            h3 {
+                color: $green;
             }
         }
 
@@ -72,6 +75,7 @@
             color: $blue;
             font-weight: 800;
             transition: color 0.2s ease;
+            margin-top: auto;
         }
     }
 
