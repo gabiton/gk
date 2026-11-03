@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Script from "next/script";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -38,19 +39,39 @@ function getYouTubeEmbedUrl(videoUrl: string) {
     return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
 }
 
+function getValidTweetUrl(rawUrl: string) {
+    try {
+        const url = new URL(rawUrl);
+        const validHost = ["x.com", "www.x.com", "twitter.com", "www.twitter.com"].includes(
+            url.hostname.toLowerCase(),
+        );
+        const match = url.pathname.match(/^\/([^/]+)\/status\/(\d+)/);
+
+        if (!validHost || !match) return null;
+        return `https://x.com/${match[1]}/status/${match[2]}`;
+    } catch {
+        return null;
+    }
+}
+
 export function Block({
     kilometers = 174630,
     title = "EN TODOS LADOS",
     videos = mockVideoItems,
+    tweets = [],
 }: {
     kilometers?: number;
     title?: string;
     videos?: VideoItem[];
+    tweets?: string[];
 }) {
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
     const [currentKilometers, setCurrentKilometers] = useState(kilometers);
     const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(mockGalleryItems);
     const kilometerDigits = currentKilometers.toLocaleString("es-AR");
+    const tweetUrls = tweets
+        .map(getValidTweetUrl)
+        .filter((url): url is string => Boolean(url));
 
     useEffect(() => {
         setCurrentKilometers(kilometers);
@@ -261,108 +282,28 @@ export function Block({
                 <div className="hr"></div>
 
                 <div className="EnTodosLados__tweets">
-                    <blockquote
-                        className="twitter-tweet"
-                        data-conversation="none"
-                        data-dnt="true"
-                    >
-                        <p lang="es" dir="ltr">
-                            La Ruta Provincial 24, en{" "}
-                            <a href="https://x.com/hashtag/Moreno?src=hash&amp;ref_src=twsrc%5Etfw">
-                                #Moreno
-                            </a>
-                            , es una obra fundamental para conectar todo este
-                            corredor de la zona oeste y transformar la vida
-                            productiva y social de estos barrios.
-                            <br />
-                            <br />
-                            La doble calzada y la iluminación van a mejorar la
-                            circulación y la seguridad, y van a contribuir a que
-                            Moreno…{" "}
-                            <a href="https://t.co/CMhtjLBF5J">
-                                pic.twitter.com/CMhtjLBF5J
-                            </a>
-                        </p>
-                        &mdash; Gabriel Katopodis (@gkatopodis){" "}
-                        <a href="https://x.com/gkatopodis/status/2115169681161982218?ref_src=twsrc%5Etfw">
-                            October 27, 2026
-                        </a>
-                    </blockquote>{" "}
-                    <blockquote
-                        className="twitter-tweet"
-                        data-conversation="none"
-                        data-dnt="true"
-                    >
-                        <p lang="es" dir="ltr">
-                            La Ruta Provincial 24, en{" "}
-                            <a href="https://x.com/hashtag/Moreno?src=hash&amp;ref_src=twsrc%5Etfw">
-                                #Moreno
-                            </a>
-                            , es una obra fundamental para conectar todo este
-                            corredor de la zona oeste y transformar la vida
-                            productiva y social de estos barrios.
-                            <br />
-                            <br />
-                            La doble calzada y la iluminación van a mejorar la
-                            circulación y la seguridad, y van a contribuir a que
-                            Moreno…{" "}
-                            <a href="https://t.co/CMhtjLBF5J">
-                                pic.twitter.com/CMhtjLBF5J
-                            </a>
-                        </p>
-                        &mdash; Gabriel Katopodis (@gkatopodis){" "}
-                        <a href="https://x.com/gkatopodis/status/2115145489968734589?ref_src=twsrc%5Etfw">
-                            October 27, 2026
-                        </a>
-                    </blockquote>{" "}
-                    <script
-                        async
-                        src="https://platform.x.com/widgets.js"
-                        charSet="utf-8"
-                    ></script>
-                    <div className="EnTodosLados__tweet">
-                        <div className="EnTodosLados__tweet__top">
-                            <div className="EnTodosLados__tweet__top__xlogo">
-                                <Icon icon="x" />
-                            </div>
-                            <figure>
-                                <img
-                                    src="https://placehold.co/836x524"
-                                    alt=""
-                                />
-                            </figure>
-                            <div>
-                                <strong>
-                                    Gabriel Katopodis
-                                    <Icon icon="verified" keepColors={true} />
-                                </strong>
-                                <span>@gkatopodis</span>
-                            </div>
-                        </div>
-                        <div className="EnTodosLados__tweet__content">
-                            <p>CASI 3 AÑOS SIN OBRA PÚBLICA</p>
-                            <p>
-                                Es muy grave por el estado de las rutas, por la
-                                falta de infraestructura hídrica, porque
-                                destruye empleo y, fundamentalmente, porque no
-                                nos permite desarrollarnos.
-                            </p>
-                        </div>
-                        <div className="EnTodosLados__tweet__meta">
-                            <p>00:00 AM · Jan 0, 0000 · Twitter for iPhone</p>
-                            <div className="EnTodosLados__tweet__meta__itesm">
-                                <div className="EnTodosLados__tweet__meta__itesm__item">
-                                    <strong>28</strong> Retweets
-                                </div>
-                                <div className="EnTodosLados__tweet__meta__itesm__item">
-                                    <strong>28</strong> Quote tweets
-                                </div>
-                                <div className="EnTodosLados__tweet__meta__itesm__item">
-                                    <strong>28</strong> Likes
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {tweetUrls.map((url) => (
+                        <blockquote
+                            className="twitter-tweet"
+                            data-conversation="none"
+                            data-dnt="true"
+                            key={url}
+                        >
+                            <a href={url}>Ver esta publicación en X</a>
+                        </blockquote>
+                    ))}
+                    {tweetUrls.length > 0 && (
+                        <Script
+                            src="https://platform.x.com/widgets.js"
+                            strategy="lazyOnload"
+                            onReady={() => {
+                                const xWindow = window as Window & {
+                                    twttr?: { widgets?: { load: () => void } };
+                                };
+                                xWindow.twttr?.widgets?.load();
+                            }}
+                        />
+                    )}
                 </div>
             </div>
 

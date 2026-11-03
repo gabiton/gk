@@ -22,12 +22,16 @@ const EnTodosLados: FC<EnTodosLadosProps> = ({ slice }) => {
             ? video.channel_logo.url
             : "/tv.png",
     }));
+    const tweets = slice.primary.tweets
+        .map((tweet) => (isFilled.link(tweet.tweet_url) ? tweet.tweet_url.url : ""))
+        .filter((url): url is string => Boolean(url));
 
     return (
         <Block
             kilometers={slice.primary.kilometers ?? undefined}
             title={slice.primary.title || "EN TODOS LADOS"}
             videos={videos.length > 0 ? videos : undefined}
+            tweets={tweets}
         />
     );
 };

@@ -60,6 +60,21 @@
             "label": "Videos"
           },
           "type": "Group"
+        },
+        "tweets": {
+          "config": {
+            "fields": {
+              "tweet_url": {
+                "config": {
+                  "label": "URL del tweet",
+                  "select": "web"
+                },
+                "type": "Link"
+              }
+            },
+            "label": "Tweets"
+          },
+          "type": "Group"
         }
       },
       "version": ""

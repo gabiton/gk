@@ -268,6 +268,20 @@ export interface EnTodosLadosSliceDefaultPrimaryVideosItem {
 }
 
 /**
+ * Item in *EnTodosLados → Default → Primary → Tweets*
+ */
+export interface EnTodosLadosSliceDefaultPrimaryTweetsItem {
+	/**
+	 * URL del tweet field in *EnTodosLados → Default → Primary → Tweets*
+	 *
+	 * - **Field Type**: Link
+	 * - **API ID Path**: en_todos_lados.default.primary.tweets[].tweet_url
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	tweet_url: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
  * Primary content in *EnTodosLados → Default → Primary*
  */
 export interface EnTodosLadosSliceDefaultPrimary {
@@ -300,6 +314,15 @@ export interface EnTodosLadosSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
 	videos: prismic.GroupField<Simplify<EnTodosLadosSliceDefaultPrimaryVideosItem>>;
+	
+	/**
+	 * Tweets field in *EnTodosLados → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **API ID Path**: en_todos_lados.default.primary.tweets[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	tweets: prismic.GroupField<Simplify<EnTodosLadosSliceDefaultPrimaryTweetsItem>>;
 }
 
 /**
