@@ -80,7 +80,7 @@ export function Block({
     }, [activeVideo]);
 
     return (
-        <section className="SobreMi">
+        <section className="SobreMi" id="sobre-mi">
             <div className="container">
                 <div className="SobreMi__top">
                     <div className="SobreMi__top__tag">{title}</div>

@@ -26,6 +26,17 @@
         font-weight: 700;
         font-size: 16px;
     }
+    ul {
+        li {
+            a {
+                font-weight: 700;
+                font-size: 16px;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
     .icon-logohero {
         display: block;
         max-width: 370px;

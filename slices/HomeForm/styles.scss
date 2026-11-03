@@ -1,6 +1,7 @@
 @use "../../scss/block" as *;
 
 .HomeForm {
+    scroll-margin-top: 80px;
     height: 100dvh;
     display: flex;
     align-items: center;

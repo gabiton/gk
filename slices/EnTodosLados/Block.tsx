@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Pagination } from "swiper/modules";
+import type { Swiper as SwiperInstance } from "swiper";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Icon } from "@/components/Icon";
 
@@ -57,6 +57,40 @@ function getValidTweetUrl(rawUrl: string) {
     }
 }
 
+function SliderArrow({
+    direction,
+    onClick,
+}: {
+    direction: "prev" | "next";
+    onClick: () => void;
+}) {
+    const isPrevious = direction === "prev";
+
+    return (
+        <button
+            className={`EnTodosLados__navigation EnTodosLados__navigation--${direction}`}
+            type="button"
+            aria-label={isPrevious ? "Ver anteriores" : "Ver siguientes"}
+            onClick={onClick}
+        >
+            <svg
+                width="11"
+                height="18"
+                viewBox="0 0 11 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M1.5 1.5L8.651 8.65104L1.5 15.802"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                />
+            </svg>
+        </button>
+    );
+}
+
 export function Block({
     kilometers = 174630,
     title = "EN TODOS LADOS",
@@ -72,6 +106,8 @@ export function Block({
     const [currentKilometers, setCurrentKilometers] = useState(kilometers);
     const [galleryItems, setGalleryItems] =
         useState<GalleryItem[]>(mockGalleryItems);
+    const videosSwiperRef = useRef<SwiperInstance | null>(null);
+    const tweetsSwiperRef = useRef<SwiperInstance | null>(null);
     const kilometerDigits = currentKilometers.toLocaleString("es-AR");
     const tweetUrls = tweets
         .map(getValidTweetUrl)
@@ -166,7 +202,7 @@ export function Block({
     }, [activeVideo]);
 
     return (
-        <section className="EnTodosLados">
+        <section className="EnTodosLados" id="todos-lados">
             <div className="container">
                 <h2>
                     <div
@@ -247,10 +283,16 @@ export function Block({
                     ))}
                 </div>
 
-                <div className="EnTodosLados__videos">
+                <div className="EnTodosLados__videos" id="medios">
+                    <SliderArrow
+                        direction="prev"
+                        onClick={() => videosSwiperRef.current?.slidePrev()}
+                    />
                     <Swiper
-                        modules={[Navigation, Pagination]}
-                        navigation
+                        modules={[Pagination]}
+                        onSwiper={(swiper) => {
+                            videosSwiperRef.current = swiper;
+                        }}
                         pagination={{ clickable: true }}
                         slidesPerView={3}
                         spaceBetween={24}
@@ -303,6 +345,10 @@ export function Block({
                             </SwiperSlide>
                         ))}
                     </Swiper>
+                    <SliderArrow
+                        direction="next"
+                        onClick={() => videosSwiperRef.current?.slideNext()}
+                    />
                 </div>
 
                 <div className="hr"></div>
@@ -313,24 +359,36 @@ export function Block({
                     }`}
                 >
                     {tweetUrls.length > 3 ? (
-                        <Swiper
-                            modules={[Navigation, Pagination]}
-                            navigation
-                            pagination={{ clickable: true }}
-                            slidesPerView={3}
-                            spaceBetween={24}
-                            breakpoints={{
-                                0: { slidesPerView: 1 },
-                                640: { slidesPerView: 2 },
-                                1024: { slidesPerView: 3 },
-                            }}
-                        >
-                            {tweetUrls.map((url) => (
-                                <SwiperSlide key={url}>
-                                    {renderTweet(url)}
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
+                        <>
+                            <SliderArrow
+                                direction="prev"
+                                onClick={() => tweetsSwiperRef.current?.slidePrev()}
+                            />
+                            <Swiper
+                                modules={[Pagination]}
+                                onSwiper={(swiper) => {
+                                    tweetsSwiperRef.current = swiper;
+                                }}
+                                pagination={{ clickable: true }}
+                                slidesPerView={3}
+                                spaceBetween={24}
+                                breakpoints={{
+                                    0: { slidesPerView: 1 },
+                                    640: { slidesPerView: 2 },
+                                    1024: { slidesPerView: 3 },
+                                }}
+                            >
+                                {tweetUrls.map((url) => (
+                                    <SwiperSlide key={url}>
+                                        {renderTweet(url)}
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                            <SliderArrow
+                                direction="next"
+                                onClick={() => tweetsSwiperRef.current?.slideNext()}
+                            />
+                        </>
                     ) : (
                         tweetUrls.map((url) => (
                             <div key={url}>{renderTweet(url)}</div>

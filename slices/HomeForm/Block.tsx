@@ -18,6 +18,7 @@ export function Block({
     return (
         <section
             className="HomeForm"
+            id="hacer"
             data-slice-type={sliceType}
             data-slice-variation={sliceVariation}
         >

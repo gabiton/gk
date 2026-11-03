@@ -85,7 +85,7 @@ export function Block({
                                                 href={slide.href}
                                                 className="button"
                                             >
-                                                <span>Ver más...</span>
+                                                <span>Ver más</span>
                                             </a>
                                         </div>
                                     </div>

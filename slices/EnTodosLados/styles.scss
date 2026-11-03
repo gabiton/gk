@@ -1,10 +1,17 @@
 @use "../../scss/block" as *;
 
 .EnTodosLados {
+    scroll-margin-top: 80px;
     border-top: 4px solid $green;
     padding-top: 88px;
     overflow: hidden;
     margin-bottom: 88px;
+
+    @include responsiveMin("menu-bp") {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+
     h2 {
         text-align: center;
         font-family: $secondary-font;
@@ -111,6 +118,7 @@
     }
 
     &__videos {
+        scroll-margin-top: 80px;
         position: relative;
         @include responsive("menu-bp") {
             padding-bottom: 40px;
@@ -209,35 +217,42 @@
             color: transparent;
             cursor: pointer;
         }
-        .swiper-button-next,
-        .swiper-button-prev {
-            width: 50px;
-            aspect-ratio: 1;
-            border-radius: 100%;
-            background: $blue;
-            display: flex;
-            transition: 0.3s;
-            top: 50% !important;
-            margin-top: -55px !important;
-            @include responsive("menu-bp") {
-                display: none;
-            }
-            &:hover {
-                background: $green;
-            }
+    }
+
+    &__navigation {
+        position: absolute;
+        z-index: 12;
+        top: 50%;
+        margin-top: -25px;
+        background: $blue2;
+        width: 50px;
+        aspect-ratio: 1;
+        border-radius: 100%;
+        border: 2px solid $green;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        color: $green;
+        @include responsive("menu-bp") {
+            display: none;
+        }
+        &:hover {
+            color: $blue;
+            background: $green;
+            cursor: pointer;
+        }
+        svg {
+            display: block;
+        }
+        &--prev {
+            left: -80px;
             svg {
-                width: 10px;
-                height: auto;
-                display: block;
-                path {
-                    fill: $white;
-                    stroke: $white;
-                    stroke-width: 2px;
-                }
+                transform: scaleX(-1);
             }
-            &:after {
-                display: none;
-            }
+        }
+        &--next {
+            right: -80px;
         }
     }
 
@@ -308,66 +323,10 @@
 
             .swiper {
                 width: 100%;
-                @include responsiveMin(" ") {
-                    padding-left: 80px;
-                    padding-right: 80px;
-                    &:before,
-                    &:after {
-                        width: 80px;
-                        height: 100%;
-                        content: "";
-                        position: absolute;
-                        background: linear-gradient(
-                            to right,
-                            #f2f2f2 0%,
-                            rgba(#f2f2f2, 0) 100%
-                        );
-                        left: 0;
-                        top: 0;
-                        z-index: 10;
-                    }
-                    &:after {
-                        left: unset;
-                        right: 0;
-                        transform: scaleX(-1);
-                    }
-                }
             }
 
             .swiper-slide {
                 height: auto;
-            }
-
-            .swiper-button-next,
-            .swiper-button-prev {
-                width: 50px;
-                aspect-ratio: 1;
-                border-radius: 100%;
-                background: $blue;
-                display: flex;
-                transition: 0.3s;
-                top: 50% !important;
-                z-index: 11;
-                margin-top: -55px !important;
-                @include responsive("menu-bp") {
-                    display: none;
-                }
-                &:hover {
-                    background: $green;
-                }
-                svg {
-                    width: 10px;
-                    height: auto;
-                    display: block;
-                    path {
-                        fill: $white;
-                        stroke: $white;
-                        stroke-width: 2px;
-                    }
-                }
-                &:after {
-                    display: none;
-                }
             }
 
             .swiper-pagination-bullets.swiper-pagination-horizontal {
