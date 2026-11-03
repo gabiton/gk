@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getInstagramApiVersion, getInstagramConfig, readInstagramToken } from "../_lib";
+import { getInstagramConfig, getInstagramGraphUrl, readInstagramToken } from "../_lib";
 
 export const runtime = "nodejs";
 
@@ -14,9 +14,9 @@ export async function GET() {
             return NextResponse.json({ error: "Instagram token expired; reconnect the account." }, { status: 401 });
         }
 
-        const url = new URL(`https://graph.instagram.com/${getInstagramApiVersion()}/${token.user_id}/media`);
+        const url = new URL(getInstagramGraphUrl(`${token.account_id}/media`));
         url.search = new URLSearchParams({
-            fields: "id,caption,media_type,media_url,permalink,thumbnail_url,timestamp",
+            fields: "id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,comments_count",
             limit: "8",
             access_token: token.access_token,
         }).toString();

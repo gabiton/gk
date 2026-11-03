@@ -6,15 +6,16 @@ export const runtime = "nodejs";
 
 export async function GET() {
     try {
-        const { appId, redirectUri } = getInstagramConfig();
+        const { appId, loginConfigId, redirectUri } = getInstagramConfig();
         const state = randomBytes(32).toString("hex");
-        const authorizationUrl = new URL("https://www.instagram.com/oauth/authorize");
+        const authorizationUrl = new URL("https://www.facebook.com/dialog/oauth");
         authorizationUrl.search = new URLSearchParams({
             client_id: appId,
+            config_id: loginConfigId,
             redirect_uri: redirectUri,
             response_type: "code",
-            scope: "instagram_business_basic",
             state,
+            override_default_response_type: "true",
         }).toString();
 
         const response = NextResponse.redirect(authorizationUrl);

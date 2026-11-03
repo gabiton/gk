@@ -8,12 +8,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Icon } from "@/components/Icon";
 
-const galleryItems = Array.from({ length: 8 }, (_, index) => ({
+const mockGalleryItems = Array.from({ length: 8 }, (_, index) => ({
     id: `gallery-${index + 1}`,
     image: `https://placehold.co/540x708?text=Foto+${index + 1}`,
     comments: 15 + index,
-    reposts: 8 + index,
+    permalink: "",
+    alt: `Foto de maqueta ${index + 1}`,
 }));
+
+type GalleryItem = (typeof mockGalleryItems)[number];
 
 const mockVideoItems = Array.from({ length: 8 }, (_, index) => ({
     id: `video-${index + 1}`,
@@ -46,11 +49,54 @@ export function Block({
 }) {
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
     const [currentKilometers, setCurrentKilometers] = useState(kilometers);
+    const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(mockGalleryItems);
     const kilometerDigits = currentKilometers.toLocaleString("es-AR");
 
     useEffect(() => {
         setCurrentKilometers(kilometers);
     }, [kilometers]);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        fetch("/api/instagram/media")
+            .then((response) => {
+                if (!response.ok) throw new Error("Instagram media is unavailable.");
+                return response.json();
+            })
+            .then((result: {
+                data?: Array<{
+                    id: string;
+                    caption?: string;
+                    media_type?: string;
+                    media_url?: string;
+                    thumbnail_url?: string;
+                    permalink?: string;
+                    comments_count?: number;
+                }>;
+            }) => {
+                if (cancelled || !result.data?.length) return;
+                const items = result.data
+                    .filter((item) => item.media_url || item.thumbnail_url)
+                    .map((item) => ({
+                        id: item.id,
+                        image: item.media_type === "VIDEO"
+                            ? item.thumbnail_url || item.media_url || ""
+                            : item.media_url || item.thumbnail_url || "",
+                        comments: item.comments_count ?? 0,
+                        permalink: item.permalink || "",
+                        alt: item.caption?.trim() || "Publicación de Instagram",
+                    }));
+                if (items.length) setGalleryItems(items);
+            })
+            .catch(() => {
+                // Keep the local mock gallery visible until Instagram is connected.
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     useEffect(() => {
         const interval = window.setInterval(() => {
@@ -131,10 +177,13 @@ export function Block({
                 <div className="EnTodosLados__grid">
                     {galleryItems.map((item) => (
                         <div className="EnTodosLados__item" key={item.id}>
-                            <img
-                                src={item.image}
-                                alt={`Foto de maqueta ${item.id}`}
-                            />
+                            {item.permalink ? (
+                                <a href={item.permalink} target="_blank" rel="noreferrer">
+                                    <img src={item.image} alt={item.alt} />
+                                </a>
+                            ) : (
+                                <img src={item.image} alt={item.alt} />
+                            )}
                             <div className="EnTodosLados__item__stats">
                                 <div>
                                     <Icon icon="like" />
@@ -145,7 +194,6 @@ export function Block({
                                 </div>
                                 <div>
                                     <Icon icon="repost" />
-                                    {item.reposts}
                                 </div>
                             </div>
                         </div>
