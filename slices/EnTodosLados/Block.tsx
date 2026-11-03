@@ -286,6 +286,7 @@ export function Block({
                         <blockquote
                             className="twitter-tweet"
                             data-conversation="none"
+                            data-cards="hidden"
                             data-dnt="true"
                             key={url}
                         >
