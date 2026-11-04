@@ -29,7 +29,7 @@ export async function generateMetadata({
     const post = await getPost(uid);
 
     return {
-        title: post.data.meta_title || post.data.title || "Noticia",
+        title: post.data.meta_title || post.data.title || "Lo que creo",
         description: post.data.meta_description || post.data.excerpt || "",
         openGraph: isFilled.image(post.data.meta_image)
             ? { images: [post.data.meta_image.url] }
@@ -89,8 +89,8 @@ export default async function PostPage({ params }: PostPageProps) {
         <main className="postDetail pageContent">
             <Container>
                 <article className="postDetail__article">
-                    <Link className="postDetail__back" href="/noticias">
-                        Volver a noticias
+                    <Link className="postDetail__back" href="/lo-que-creo">
+                        Volver
                     </Link>
                     <h1 className="postDetail__title">{title}</h1>
                     {post.data.excerpt && (

@@ -17,7 +17,7 @@ export default async function NoticiasArchive() {
     return (
         <main className="postsArchive pageContent">
             <Container>
-                <h1 className="postsArchive__title">Noticias</h1>
+                <h1 className="postsArchive__title">Lo que creo</h1>
                 {posts.length > 0 ? (
                     <div className="postsArchive__grid">
                         {posts.map((post) => {
