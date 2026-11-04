@@ -129,7 +129,7 @@ export default async function PostPage({ params }: PostPageProps) {
                                 >
                                     <Link
                                         className="postsArchive__card__link"
-                                        href={`/noticias/${relatedPost.uid}`}
+                                        href={`/lo-que-creo/${relatedPost.uid}`}
                                     ></Link>
                                     <figure className="postsArchive__card__image">
                                         {isFilled.image(

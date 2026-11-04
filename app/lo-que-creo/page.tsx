@@ -30,7 +30,7 @@ export default async function NoticiasArchive() {
                                 >
                                     <Link
                                         className="postsArchive__card__link"
-                                        href={`/noticias/${post.uid}`}
+                                        href={`/lo-que-creo/${post.uid}`}
                                     ></Link>
                                     <figure className="postsArchive__card__image">
                                         {isFilled.image(

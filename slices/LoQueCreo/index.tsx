@@ -34,7 +34,7 @@ const LoQueCreo = async ({ slice }: LoQueCreoProps) => {
                 image: isFilled.image(post.data.featured_image)
                     ? post.data.featured_image.url
                     : "https://placehold.co/1060x786?text=Noticia",
-                href: asLink(post) || `/noticias/${post.uid}`,
+                href: asLink(post) || `/lo-que-creo/${post.uid}`,
             },
         ];
     });
