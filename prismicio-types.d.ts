@@ -572,6 +572,16 @@ export interface LoQueCreoSliceDefaultPrimaryItemsItem {
  */
 export interface LoQueCreoSliceDefaultPrimary {
 	/**
+	 * Volanta field in *LoQueCreo → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: lo_que_creo.default.primary.eyebrow
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	eyebrow: prismic.KeyTextField;
+	
+	/**
 	 * Título field in *LoQueCreo → Default → Primary*
 	 *
 	 * - **Field Type**: Text

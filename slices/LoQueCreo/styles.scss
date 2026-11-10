@@ -9,9 +9,13 @@
     }
     &__top {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: space-between;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        h4 {
+            font-weight: 700;
+            color: $blue;
+        }
         a {
             font-size: 17px;
             font-weight: bold;

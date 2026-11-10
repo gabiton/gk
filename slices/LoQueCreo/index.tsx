@@ -41,6 +41,7 @@ const LoQueCreo = async ({ slice }: LoQueCreoProps) => {
 
     return (
         <Block
+            eyebrow={slice.primary.eyebrow || undefined}
             title={slice.primary.title || undefined}
             viewAllHref={
                 isFilled.link(slice.primary.view_all_link)

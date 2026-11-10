@@ -10,6 +10,12 @@
       "imageUrl": "",
       "name": "Default",
       "primary": {
+        "eyebrow": {
+          "config": {
+            "label": "Volanta"
+          },
+          "type": "Text"
+        },
         "title": {
           "config": {
             "label": "Título"

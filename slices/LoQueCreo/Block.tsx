@@ -16,10 +16,12 @@ type SlideItem = {
 };
 
 export function Block({
+    eyebrow = "",
     title = "LO QUE CREO",
     viewAllHref = "#",
     slides = [],
 }: {
+    eyebrow?: string;
     title?: string;
     viewAllHref?: string;
     slides?: SlideItem[];
@@ -32,7 +34,10 @@ export function Block({
         <section className="loQueCreo">
             <div className="container">
                 <div className="loQueCreo__top">
-                    <div className="loQueCreo__tag">{title}</div>
+                    <div className="loQueCreo__top__left">
+                        <h4>{eyebrow}</h4>
+                        <div className="loQueCreo__tag">{title}</div>
+                    </div>
                     <a href={viewAllHref}>Ver todos</a>
                 </div>
 

@@ -103,12 +103,15 @@ export function Block({
     tweets?: string[];
 }) {
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
-    const [currentKilometers, setCurrentKilometers] = useState(kilometers);
+    const [kilometerAnimationStarted, setKilometerAnimationStarted] =
+        useState(false);
+    const [kilometerDigitsVisible, setKilometerDigitsVisible] = useState(false);
+    const kilometersRef = useRef<HTMLDivElement | null>(null);
     const [galleryItems, setGalleryItems] =
         useState<GalleryItem[]>(mockGalleryItems);
     const videosSwiperRef = useRef<SwiperInstance | null>(null);
     const tweetsSwiperRef = useRef<SwiperInstance | null>(null);
-    const kilometerDigits = currentKilometers.toLocaleString("es-AR");
+    const kilometerDigits = kilometers.toLocaleString("es-AR");
     const tweetUrls = tweets
         .map(getValidTweetUrl)
         .filter((url): url is string => Boolean(url));
@@ -124,8 +127,32 @@ export function Block({
     );
 
     useEffect(() => {
-        setCurrentKilometers(kilometers);
-    }, [kilometers]);
+        const element = kilometersRef.current;
+        if (!element || kilometerAnimationStarted) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return;
+                setKilometerAnimationStarted(true);
+                observer.disconnect();
+            },
+            { threshold: 0.35 },
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [kilometerAnimationStarted]);
+
+    useEffect(() => {
+        if (!kilometerAnimationStarted) return;
+
+        // Let the initial zero positions render before applying the target offsets.
+        const frame = window.requestAnimationFrame(() => {
+            setKilometerDigitsVisible(true);
+        });
+
+        return () => window.cancelAnimationFrame(frame);
+    }, [kilometerAnimationStarted]);
 
     useEffect(() => {
         let cancelled = false;
@@ -178,14 +205,6 @@ export function Block({
     }, []);
 
     useEffect(() => {
-        const interval = window.setInterval(() => {
-            setCurrentKilometers((current) => current + 1);
-        }, 2500);
-
-        return () => window.clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
         if (!activeVideo) return;
 
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -206,6 +225,7 @@ export function Block({
             <div className="container">
                 <h2>
                     <div
+                        ref={kilometersRef}
                         className="EnTodosLados__km"
                         aria-label={kilometerDigits}
                     >
@@ -224,8 +244,11 @@ export function Block({
                                             <span
                                                 className="EnTodosLados__km__digit__strip"
                                                 style={{
-                                                    transform: `translateY(-${Number(character) * 10}%)`,
-                                                    transitionDelay: `${index * 70}ms`,
+                                                    transform: `translateY(-${kilometerDigitsVisible ? Number(character) * 10 : 0}%)`,
+                                                    transitionDelay:
+                                                        kilometerAnimationStarted
+                                                            ? `${index * 100}ms`
+                                                            : "0ms",
                                                 }}
                                             >
                                                 {Array.from(
@@ -355,14 +378,18 @@ export function Block({
 
                 <div
                     className={`EnTodosLados__tweets${
-                        tweetUrls.length > 3 ? " EnTodosLados__tweets--slider" : ""
+                        tweetUrls.length > 3
+                            ? " EnTodosLados__tweets--slider"
+                            : ""
                     }`}
                 >
                     {tweetUrls.length > 3 ? (
                         <>
                             <SliderArrow
                                 direction="prev"
-                                onClick={() => tweetsSwiperRef.current?.slidePrev()}
+                                onClick={() =>
+                                    tweetsSwiperRef.current?.slidePrev()
+                                }
                             />
                             <Swiper
                                 modules={[Pagination]}
@@ -386,7 +413,9 @@ export function Block({
                             </Swiper>
                             <SliderArrow
                                 direction="next"
-                                onClick={() => tweetsSwiperRef.current?.slideNext()}
+                                onClick={() =>
+                                    tweetsSwiperRef.current?.slideNext()
+                                }
                             />
                         </>
                     ) : (
