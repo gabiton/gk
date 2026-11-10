@@ -11,7 +11,8 @@ import { Icon } from "@/components/Icon";
 
 const mockGalleryItems = Array.from({ length: 8 }, (_, index) => ({
     id: `gallery-${index + 1}`,
-    image: `https://placehold.co/540x708?text=Foto+${index + 1}`,
+    image: `https://placehold.co/540x708`,
+    likes: 120 + index,
     comments: 15 + index,
     permalink: "",
     alt: `Foto de maqueta ${index + 1}`,
@@ -172,6 +173,7 @@ export function Block({
                         media_url?: string;
                         thumbnail_url?: string;
                         permalink?: string;
+                        like_count?: number;
                         comments_count?: number;
                     }>;
                 }) => {
@@ -187,6 +189,7 @@ export function Block({
                                       item.thumbnail_url ||
                                       "",
                             comments: item.comments_count ?? 0,
+                            likes: item.like_count ?? 0,
                             permalink: item.permalink || "",
                             alt:
                                 item.caption?.trim() ||
@@ -277,33 +280,40 @@ export function Block({
                 </h2>
 
                 <div className="EnTodosLados__grid">
-                    {galleryItems.map((item) => (
-                        <div className="EnTodosLados__item" key={item.id}>
-                            {item.permalink ? (
-                                <a
-                                    href={item.permalink}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <img src={item.image} alt={item.alt} />
-                                </a>
-                            ) : (
+                    {galleryItems.map((item) => {
+                        const content = (
+                            <>
                                 <img src={item.image} alt={item.alt} />
-                            )}
-                            <div className="EnTodosLados__item__stats">
-                                <div>
-                                    <Icon icon="like" />
+                                <div className="EnTodosLados__item__stats">
+                                    <div>
+                                        <Icon icon="like" />
+                                        {item.likes}
+                                    </div>
+                                    <div>
+                                        <Icon icon="comment" />
+                                        {item.comments}
+                                    </div>
                                 </div>
-                                <div>
-                                    <Icon icon="comment" />
-                                    {item.comments}
-                                </div>
-                                <div>
-                                    <Icon icon="repost" />
-                                </div>
+                            </>
+                        );
+
+                        return item.permalink ? (
+                            <a
+                                className="EnTodosLados__item"
+                                href={item.permalink}
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label={`Ver publicación de Instagram: ${item.alt}`}
+                                key={item.id}
+                            >
+                                {content}
+                            </a>
+                        ) : (
+                            <div className="EnTodosLados__item" key={item.id}>
+                                {content}
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 <div className="EnTodosLados__videos" id="medios">

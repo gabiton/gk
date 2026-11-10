@@ -85,6 +85,9 @@
         aspect-ratio: 270/354;
         position: relative;
         overflow: hidden;
+        display: block;
+        color: inherit;
+        text-decoration: none;
         img {
             @include absolute;
             object-fit: cover;

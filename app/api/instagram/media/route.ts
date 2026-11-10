@@ -16,7 +16,7 @@ export async function GET() {
 
         const url = new URL(getInstagramGraphUrl(`${token.account_id}/media`));
         url.search = new URLSearchParams({
-            fields: "id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,comments_count",
+            fields: "id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,comments_count,like_count",
             limit: "8",
             access_token: token.access_token,
         }).toString();
