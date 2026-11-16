@@ -8,7 +8,7 @@ import { Block } from "./Block";
 export type EnTodosLadosProps = SliceComponentProps<Content.EnTodosLadosSlice>;
 
 const EnTodosLados: FC<EnTodosLadosProps> = ({ slice }) => {
-    const photos = slice.primary.photos
+    const photos = (slice.primary.photos ?? [])
         .map((photo, index) => ({
             id: `photo-${index + 1}`,
             image: isFilled.image(photo.image) ? photo.image.url : "",
