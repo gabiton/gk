@@ -104,6 +104,7 @@ export function Block({
         useState(false);
     const [kilometerDigitsVisible, setKilometerDigitsVisible] = useState(false);
     const kilometersRef = useRef<HTMLDivElement | null>(null);
+    const kilometerAnimationFrameRef = useRef<number | null>(null);
     const videosSwiperRef = useRef<SwiperInstance | null>(null);
     const tweetsSwiperRef = useRef<SwiperInstance | null>(null);
     const kilometerDigits = kilometers.toLocaleString("es-AR");
@@ -123,31 +124,46 @@ export function Block({
 
     useEffect(() => {
         const element = kilometersRef.current;
-        if (!element || kilometerAnimationStarted) return;
+        if (!element) return;
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (!entry.isIntersecting) return;
+                if (kilometerAnimationFrameRef.current !== null) {
+                    window.cancelAnimationFrame(
+                        kilometerAnimationFrameRef.current,
+                    );
+                    kilometerAnimationFrameRef.current = null;
+                }
+
+                if (!entry.isIntersecting) {
+                    setKilometerDigitsVisible(false);
+                    setKilometerAnimationStarted(false);
+                    return;
+                }
+
                 setKilometerAnimationStarted(true);
-                observer.disconnect();
+                setKilometerDigitsVisible(false);
+                // Paint the reset position before rolling to the target again.
+                kilometerAnimationFrameRef.current =
+                    window.requestAnimationFrame(() => {
+                        kilometerAnimationFrameRef.current =
+                            window.requestAnimationFrame(() => {
+                                setKilometerDigitsVisible(true);
+                                kilometerAnimationFrameRef.current = null;
+                            });
+                    });
             },
             { threshold: 0.35 },
         );
 
         observer.observe(element);
-        return () => observer.disconnect();
-    }, [kilometerAnimationStarted]);
-
-    useEffect(() => {
-        if (!kilometerAnimationStarted) return;
-
-        // Let the initial zero positions render before applying the target offsets.
-        const frame = window.requestAnimationFrame(() => {
-            setKilometerDigitsVisible(true);
-        });
-
-        return () => window.cancelAnimationFrame(frame);
-    }, [kilometerAnimationStarted]);
+        return () => {
+            observer.disconnect();
+            if (kilometerAnimationFrameRef.current !== null) {
+                window.cancelAnimationFrame(kilometerAnimationFrameRef.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         if (!activeVideo) return;
