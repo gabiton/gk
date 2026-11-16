@@ -7,18 +7,12 @@ import { Pagination } from "swiper/modules";
 import type { Swiper as SwiperInstance } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Icon } from "@/components/Icon";
-
-const mockGalleryItems = Array.from({ length: 8 }, (_, index) => ({
-    id: `gallery-${index + 1}`,
-    image: `https://placehold.co/540x708`,
-    likes: 120 + index,
-    comments: 15 + index,
-    permalink: "",
-    alt: `Foto de maqueta ${index + 1}`,
-}));
-
-type GalleryItem = (typeof mockGalleryItems)[number];
+type GalleryItem = {
+    id: string;
+    image: string;
+    permalink: string;
+    alt: string;
+};
 
 const mockVideoItems = Array.from({ length: 8 }, (_, index) => ({
     id: `video-${index + 1}`,
@@ -95,11 +89,13 @@ function SliderArrow({
 export function Block({
     kilometers = 174630,
     title = "EN TODOS LADOS",
+    photos = [],
     videos = mockVideoItems,
     tweets = [],
 }: {
     kilometers?: number;
     title?: string;
+    photos?: GalleryItem[];
     videos?: VideoItem[];
     tweets?: string[];
 }) {
@@ -108,8 +104,6 @@ export function Block({
         useState(false);
     const [kilometerDigitsVisible, setKilometerDigitsVisible] = useState(false);
     const kilometersRef = useRef<HTMLDivElement | null>(null);
-    const [galleryItems, setGalleryItems] =
-        useState<GalleryItem[]>(mockGalleryItems);
     const videosSwiperRef = useRef<SwiperInstance | null>(null);
     const tweetsSwiperRef = useRef<SwiperInstance | null>(null);
     const kilometerDigits = kilometers.toLocaleString("es-AR");
@@ -154,58 +148,6 @@ export function Block({
 
         return () => window.cancelAnimationFrame(frame);
     }, [kilometerAnimationStarted]);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        fetch("/api/instagram/media")
-            .then((response) => {
-                if (!response.ok)
-                    throw new Error("Instagram media is unavailable.");
-                return response.json();
-            })
-            .then(
-                (result: {
-                    data?: Array<{
-                        id: string;
-                        caption?: string;
-                        media_type?: string;
-                        media_url?: string;
-                        thumbnail_url?: string;
-                        permalink?: string;
-                        like_count?: number;
-                        comments_count?: number;
-                    }>;
-                }) => {
-                    if (cancelled || !result.data?.length) return;
-                    const items = result.data
-                        .filter((item) => item.media_url || item.thumbnail_url)
-                        .map((item) => ({
-                            id: item.id,
-                            image:
-                                item.media_type === "VIDEO"
-                                    ? item.thumbnail_url || item.media_url || ""
-                                    : item.media_url ||
-                                      item.thumbnail_url ||
-                                      "",
-                            comments: item.comments_count ?? 0,
-                            likes: item.like_count ?? 0,
-                            permalink: item.permalink || "",
-                            alt:
-                                item.caption?.trim() ||
-                                "Publicación de Instagram",
-                        }));
-                    if (items.length) setGalleryItems(items);
-                },
-            )
-            .catch(() => {
-                // Keep the local mock gallery visible until Instagram is connected.
-            });
-
-        return () => {
-            cancelled = true;
-        };
-    }, []);
 
     useEffect(() => {
         if (!activeVideo) return;
@@ -280,22 +222,8 @@ export function Block({
                 </h2>
 
                 <div className="EnTodosLados__grid">
-                    {galleryItems.map((item) => {
-                        const content = (
-                            <>
-                                <img src={item.image} alt={item.alt} />
-                                <div className="EnTodosLados__item__stats">
-                                    <div>
-                                        <Icon icon="like" />
-                                        {item.likes}
-                                    </div>
-                                    <div>
-                                        <Icon icon="comment" />
-                                        {item.comments}
-                                    </div>
-                                </div>
-                            </>
-                        );
+                    {photos.map((item) => {
+                        const image = <img src={item.image} alt={item.alt} />;
 
                         return item.permalink ? (
                             <a
@@ -303,14 +231,14 @@ export function Block({
                                 href={item.permalink}
                                 target="_blank"
                                 rel="noreferrer"
-                                aria-label={`Ver publicación de Instagram: ${item.alt}`}
+                                aria-label={`Ver foto: ${item.alt}`}
                                 key={item.id}
                             >
-                                {content}
+                                {image}
                             </a>
                         ) : (
                             <div className="EnTodosLados__item" key={item.id}>
-                                {content}
+                                {image}
                             </div>
                         );
                     })}

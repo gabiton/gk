@@ -8,6 +8,14 @@ import { Block } from "./Block";
 export type EnTodosLadosProps = SliceComponentProps<Content.EnTodosLadosSlice>;
 
 const EnTodosLados: FC<EnTodosLadosProps> = ({ slice }) => {
+    const photos = slice.primary.photos
+        .map((photo, index) => ({
+            id: `photo-${index + 1}`,
+            image: isFilled.image(photo.image) ? photo.image.url : "",
+            permalink: isFilled.link(photo.link) ? photo.link.url ?? "" : "",
+            alt: isFilled.image(photo.image) ? photo.image.alt ?? "" : "",
+        }))
+        .filter((photo) => photo.image);
     const videos = slice.primary.videos.map((video, index) => ({
         id: `video-${index + 1}`,
         image: isFilled.image(video.image)
@@ -30,6 +38,7 @@ const EnTodosLados: FC<EnTodosLadosProps> = ({ slice }) => {
         <Block
             kilometers={slice.primary.kilometers ?? undefined}
             title={slice.primary.title || "EN TODOS LADOS"}
+            photos={photos}
             videos={videos.length > 0 ? videos : undefined}
             tweets={tweets}
         />

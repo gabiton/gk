@@ -22,6 +22,26 @@
           },
           "type": "Text"
         },
+        "photos": {
+          "config": {
+            "fields": {
+              "image": {
+                "config": {
+                  "label": "Foto"
+                },
+                "type": "Image"
+              },
+              "link": {
+                "config": {
+                  "label": "Link"
+                },
+                "type": "Link"
+              }
+            },
+            "label": "Fotos"
+          },
+          "type": "Group"
+        },
         "videos": {
           "config": {
             "fields": {

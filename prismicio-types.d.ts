@@ -309,6 +309,31 @@ export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocu
 export type AllDocumentTypes = HomepageDocument | PostDocument | SettingsDocument;
 
 /**
+ * Item in *EnTodosLados → Default → Primary → Fotos*
+ */
+export interface EnTodosLadosSliceDefaultPrimaryPhotosItem {
+	/**
+	 * Foto field in *EnTodosLados → Default → Primary → Fotos*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: en_todos_lados.default.primary.photos[].image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Link field in *EnTodosLados → Default → Primary → Fotos*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: en_todos_lados.default.primary.photos[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
  * Item in *EnTodosLados → Default → Primary → Videos*
  */
 export interface EnTodosLadosSliceDefaultPrimaryVideosItem {
@@ -401,6 +426,16 @@ export interface EnTodosLadosSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	title: prismic.KeyTextField;
+	
+	/**
+	 * Fotos field in *EnTodosLados → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: en_todos_lados.default.primary.photos[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	photos: prismic.GroupField<Simplify<EnTodosLadosSliceDefaultPrimaryPhotosItem>>;
 	
 	/**
 	 * Videos field in *EnTodosLados → Default → Primary*
@@ -755,6 +790,7 @@ declare module "@prismicio/client" {
 			SettingsDocumentDataSocialLinksItem,
 			AllDocumentTypes,
 			EnTodosLadosSlice,
+			EnTodosLadosSliceDefaultPrimaryPhotosItem,
 			EnTodosLadosSliceDefaultPrimaryVideosItem,
 			EnTodosLadosSliceDefaultPrimaryTweetsItem,
 			EnTodosLadosSliceDefaultPrimary,
