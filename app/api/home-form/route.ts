@@ -14,7 +14,18 @@ type IntegrationConfig = {
         telefono: { incluido: boolean; requerido: boolean };
         email: { incluido: boolean; requerido: boolean };
         al_menos_un_contacto: boolean;
-        partido: { incluido: boolean; requerido: boolean };
+        provincia?: {
+            incluido?: boolean;
+            requerido?: boolean;
+            defecto?: unknown;
+            opciones?: unknown[];
+        };
+        partido?: {
+            incluido?: boolean;
+            requerido?: boolean;
+            provincia?: unknown;
+            opciones?: unknown[];
+        };
     };
     aviso: {
         version: string;
@@ -30,6 +41,16 @@ type ProblemResponse = {
     errores?: { campo?: string; codigo?: string; mensaje?: string }[];
     estado?: string;
 };
+
+function getOptionValue(raw: unknown): string {
+    if (typeof raw === "string" || typeof raw === "number") return String(raw);
+    if (!raw || typeof raw !== "object") return "";
+
+    const item = raw as Record<string, unknown>;
+    const value =
+        item.codigo ?? item.id ?? item.value ?? item.valor ?? item.clave;
+    return value === undefined || value === null ? "" : String(value);
+}
 
 function json(data: unknown, status = 200) {
     return NextResponse.json(data, {
@@ -92,6 +113,10 @@ function validateInput(input: unknown) {
     const email = typeof data.email === "string" ? data.email.trim() : "";
     const telefono =
         typeof data.telefono === "string" ? data.telefono.trim() : "";
+    const provincia =
+        typeof data.provincia === "string" ? data.provincia.trim() : "";
+    const partido =
+        typeof data.partido === "string" ? data.partido.trim() : "";
     const errores: { campo: string; codigo: string; mensaje: string }[] = [];
     const invalidName = (value: string) =>
         !value ||
@@ -126,12 +151,24 @@ function validateInput(input: unknown) {
             mensaje: "Ingresá una dirección de email válida.",
         });
     }
-    if (telefono && !/^\+[1-9]\d{5,14}$/.test(telefono)) {
+    if (telefono && !/^\+?[0-9 .()\-]{6,20}$/.test(telefono)) {
         errores.push({
             campo: "telefono",
             codigo: "FORMATO_INVALIDO",
-            mensaje: "Usá formato internacional: + y entre 6 y 15 dígitos, sin espacios.",
+            mensaje: "Ingresá el teléfono completo, con el código de área.",
         });
+    }
+    for (const [campo, value] of [
+        ["provincia", provincia],
+        ["partido", partido],
+    ]) {
+        if (value.length > 128 || /[<>\u0000-\u001f\u007f]/.test(value)) {
+            errores.push({
+                campo,
+                codigo: "FORMATO_INVALIDO",
+                mensaje: "Selecciona una opcion valida.",
+            });
+        }
     }
     if (!email && !telefono) {
         errores.push({
@@ -148,7 +185,7 @@ function validateInput(input: unknown) {
         });
     }
 
-    return { nombre, apellido, email, telefono, errores };
+    return { nombre, apellido, email, telefono, provincia, partido, errores };
 }
 
 export async function POST(request: Request) {
@@ -184,7 +221,15 @@ export async function POST(request: Request) {
         return json({ codigo: "JSON_INVALIDO", detail: "El envío no tiene un formato válido." }, 400);
     }
 
-    const { nombre, apellido, email, telefono, errores } = validateInput(input);
+    const {
+        nombre,
+        apellido,
+        email,
+        telefono,
+        provincia,
+        partido,
+        errores,
+    } = validateInput(input);
     if (errores.length) {
         return json(
             {
@@ -213,6 +258,43 @@ export async function POST(request: Request) {
                 detail: "El formulario no está recibiendo respuestas por el momento.",
             },
             409,
+        );
+    }
+
+    const provinciaOpciones = (config.campos.provincia?.opciones ?? [])
+        .map(getOptionValue)
+        .filter(Boolean);
+    const partidoOpciones = (config.campos.partido?.opciones ?? [])
+        .map(getOptionValue)
+        .filter(Boolean);
+    const provinciaPartidos = getOptionValue(config.campos.partido?.provincia);
+    const erroresUbicacion: { campo: string; codigo: string; mensaje: string }[] = [];
+
+    if (provincia && !provinciaOpciones.includes(provincia)) {
+        erroresUbicacion.push({
+            campo: "provincia",
+            codigo: "OPCION_INVALIDA",
+            mensaje: "Selecciona una opcion valida.",
+        });
+    }
+    if (
+        partido &&
+        (provincia !== provinciaPartidos || !partidoOpciones.includes(partido))
+    ) {
+        erroresUbicacion.push({
+            campo: "partido",
+            codigo: "OPCION_INVALIDA",
+            mensaje: "Selecciona una opcion valida.",
+        });
+    }
+    if (erroresUbicacion.length) {
+        return json(
+            {
+                codigo: "DATOS_INVALIDOS",
+                detail: "RevisÃ¡ la provincia y el municipio seleccionados.",
+                errores: erroresUbicacion,
+            },
+            422,
         );
     }
 
@@ -258,6 +340,8 @@ export async function POST(request: Request) {
     };
     if (config.campos.email.incluido && email) payload.email = email;
     if (config.campos.telefono.incluido && telefono) payload.telefono = telefono;
+    if (provincia) payload.provincia = provincia;
+    if (partido) payload.partido = partido;
 
     try {
         const response = await fetch(config.endpoint_registros, {

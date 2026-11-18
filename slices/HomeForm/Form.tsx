@@ -8,6 +8,13 @@ type FormConfig = {
         telefono: { incluido: boolean; requerido: boolean };
         email: { incluido: boolean; requerido: boolean };
         al_menos_un_contacto: boolean;
+        provincia?: { opciones?: unknown[]; defecto?: unknown };
+        partido?: {
+            incluido: boolean;
+            requerido: boolean;
+            provincia?: unknown;
+            opciones?: unknown[];
+        };
     };
     aviso: {
         version: string;
@@ -33,15 +40,62 @@ type PendingSubmission = {
     serializedPayload: string;
 };
 
+type LocationOption = { value: string; label: string };
+
+function toLocationOption(raw: unknown): LocationOption | null {
+    if (typeof raw === "string" || typeof raw === "number") {
+        const value = String(raw);
+        return { value, label: value };
+    }
+    if (!raw || typeof raw !== "object") return null;
+
+    const item = raw as Record<string, unknown>;
+    const value =
+        item.codigo ?? item.id ?? item.value ?? item.valor ?? item.clave;
+    const label =
+        item.nombre ?? item.label ?? item.descripcion ?? item.name ?? value;
+    if (
+        value === undefined ||
+        value === null ||
+        label === undefined ||
+        label === null
+    )
+        return null;
+
+    return { value: String(value), label: String(label) };
+}
+
+function getLocationValue(raw: unknown) {
+    return toLocationOption(raw)?.value ?? "";
+}
+
 export function Form() {
     const [config, setConfig] = useState<FormConfig | null>(null);
     const [configError, setConfigError] = useState(false);
     const [sending, setSending] = useState(false);
     const [feedback, setFeedback] = useState("");
+    const [submittedSuccessfully, setSubmittedSuccessfully] = useState(false);
     const [fieldErrors, setFieldErrors] = useState<ApiError[]>([]);
+    const [selectedProvince, setSelectedProvince] = useState("");
+    const [partidoSearch, setPartidoSearch] = useState("");
     const [pendingSubmission, setPendingSubmission] =
         useState<PendingSubmission | null>(null);
     const submitting = useRef(false);
+    const provinceOptions = (config?.campos.provincia?.opciones ?? [])
+        .map(toLocationOption)
+        .filter((option): option is LocationOption => Boolean(option));
+    const partidoOptions = (config?.campos.partido?.opciones ?? [])
+        .map(toLocationOption)
+        .filter((option): option is LocationOption => Boolean(option));
+    const partidoProvince = getLocationValue(config?.campos.partido?.provincia);
+    const partidoEnabled =
+        Boolean(selectedProvince) && selectedProvince === partidoProvince;
+
+    useEffect(() => {
+        if (!config) return;
+        setSelectedProvince(getLocationValue(config.campos.provincia?.defecto));
+        setPartidoSearch("");
+    }, [config]);
 
     useEffect(() => {
         let active = true;
@@ -83,6 +137,7 @@ export function Form() {
         const consentimiento = formData.get("consentimiento") === "on";
 
         setFeedback("");
+        setSubmittedSuccessfully(false);
         setFieldErrors([]);
 
         if (config.campos.al_menos_un_contacto && !email && !telefono) {
@@ -102,7 +157,37 @@ export function Form() {
             return;
         }
 
-        const payload = { nombre, apellido, email, telefono, consentimiento };
+        const normalizedPartidoSearch = partidoSearch
+            .trim()
+            .toLocaleLowerCase("es");
+        const matchingPartido = partidoOptions.find(
+            (option) =>
+                option.label.trim().toLocaleLowerCase("es") ===
+                normalizedPartidoSearch,
+        );
+        if (partidoSearch && (!partidoEnabled || !matchingPartido)) {
+            setFieldErrors([
+                {
+                    campo: "partido",
+                    mensaje: "Seleccioná un municipio de la lista.",
+                },
+            ]);
+            return;
+        }
+
+        const payload = {
+            nombre,
+            apellido,
+            email,
+            telefono,
+            provincia: provinceOptions.some(
+                (option) => option.value === selectedProvince,
+            )
+                ? selectedProvince
+                : "",
+            partido: partidoEnabled ? (matchingPartido?.value ?? "") : "",
+            consentimiento,
+        };
         const serializedPayload = JSON.stringify(payload);
         const submission =
             pendingSubmission?.serializedPayload === serializedPayload
@@ -145,8 +230,13 @@ export function Form() {
             }
 
             form.reset();
+            setSelectedProvince(
+                getLocationValue(config.campos.provincia?.defecto),
+            );
+            setPartidoSearch("");
             setPendingSubmission(null);
-            setFeedback("Datos recibidos. ¡Gracias por sumarte!");
+            setFeedback("Datos recibidos. Gracias por sumarte!");
+            setSubmittedSuccessfully(true);
         } catch {
             setFeedback(
                 "No se pudo conectar. Revisá tu conexión e intentá nuevamente.",
@@ -226,12 +316,56 @@ export function Form() {
                         placeholder="Celular (+549...)"
                         autoComplete="tel"
                         inputMode="tel"
-                        pattern="\\+[1-9][0-9]{5,14}"
-                        maxLength={16}
+                        pattern="\+?[0-9 .\(\)\-]{6,20}"
+                        maxLength={21}
                         required={config.campos.telefono.requerido}
                         disabled={sending}
-                        title="Usá formato internacional: + y entre 6 y 15 dígitos, sin espacios."
+                        title="Teléfono completo, con el código de área"
                     />
+                </div>
+            )}
+
+            {provinceOptions.length > 0 && (
+                <div className="field">
+                    <select
+                        name="provincia"
+                        className={selectedProvince ? "is-selected" : ""}
+                        value={selectedProvince}
+                        onChange={(event) => {
+                            setSelectedProvince(event.target.value);
+                            setPartidoSearch("");
+                        }}
+                        disabled={sending}
+                        aria-label="Provincia"
+                    >
+                        <option value="">Provincia</option>
+                        {provinceOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
+            {partidoOptions.length > 0 && (
+                <div className="field">
+                    <input
+                        name="partido_busqueda"
+                        type="text"
+                        list="home-form-partidos"
+                        placeholder="Municipio"
+                        autoComplete="off"
+                        value={partidoSearch}
+                        disabled={sending || !partidoEnabled}
+                        onChange={(event) => {
+                            setPartidoSearch(event.target.value);
+                        }}
+                    />
+                    <datalist id="home-form-partidos">
+                        {partidoOptions.map((option) => (
+                            <option key={option.value} value={option.label} />
+                        ))}
+                    </datalist>
                 </div>
             )}
 
@@ -269,13 +403,23 @@ export function Form() {
                     aria-live="polite"
                 >
                     {feedback}
+                    {submittedSuccessfully && (
+                        <>
+                            {" "}
+                            <br />
+                            <a
+                                href="https://whatsapp.com/channel/0029VaJ3dLRFcow3lLkE2r3H"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Seguinos en el canal de WhatsApp
+                            </a>
+                        </>
+                    )}
                 </p>
             )}
             <div className="submit">
-                <button
-                    type="submit"
-                    disabled={sending}
-                >
+                <button type="submit" disabled={sending}>
                     {sending ? "Enviando..." : "Quiero ser parte"}
                 </button>
             </div>

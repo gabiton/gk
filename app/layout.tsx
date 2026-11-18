@@ -10,11 +10,23 @@ import {
     mapSiteSettings,
 } from "@/components/Layout/siteSettings";
 export const metadata: Metadata = {
+    metadataBase: new URL(
+        process.env.NEXT_PUBLIC_SITE_URL || "https://gk-hazel-ten.vercel.app",
+    ),
     title: {
         default: "Gabriel Katopodis",
         template: "%s | Gabriel Katopodis",
     },
     description: "",
+    icons: {
+        icon: "/Favicon.png",
+    },
+    openGraph: {
+        type: "website",
+        locale: "es_AR",
+        siteName: "Gabriel Katopodis dice, hace y está",
+        images: ["/OG.jpg"],
+    },
 };
 
 export default async function RootLayout({

@@ -77,6 +77,13 @@
         grid-template-columns: repeat(4, 1fr);
         max-width: 1075px;
         margin: 0 auto 70px;
+        @include responsiveMin("menu-bp") {
+            &:has(.EnTodosLados__item:nth-child(6)):not(
+                    :has(.EnTodosLados__item:nth-child(7))
+                ) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
         @include responsive("menu-bp") {
             grid-template-columns: repeat(2, 1fr);
         }
