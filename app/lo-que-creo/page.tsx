@@ -16,12 +16,11 @@ export default async function NoticiasArchive() {
             },
         }),
     ]);
-    const loQueCreoSlice = homepage.data.slices.find(
-        (slice): slice is Content.LoQueCreoSlice =>
-            slice.slice_type === "lo_que_creo",
-    );
+    const loQueCreoPrimary = homepage.data.slices.find(
+        (slice) => slice.slice_type === "lo_que_creo",
+    )?.primary as Content.LoQueCreoSlice["primary"] | undefined;
     const orderedPostIds =
-        loQueCreoSlice?.primary.items
+        loQueCreoPrimary?.items
             .map((item) => item.post)
             .filter(isFilled.contentRelationship)
             .map((post) => post.id) ?? [];
