@@ -15,7 +15,7 @@
     h2 {
         text-align: center;
         font-family: $secondary-font;
-        color: $primary;
+        color: $blue;
         font-size: rv(50px, 70px);
         font-weight: 800;
         margin-bottom: 50px;
@@ -106,15 +106,15 @@
             transition: 0.6s;
             background: linear-gradient(
                 to bottom,
-                rgba($primary, 0) 0%,
-                $primary 100%
+                rgba($blue, 0) 0%,
+                $blue 100%
             );
             inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            color: $color-white;
+            color: $white;
             gap: 15px;
             text-align: center;
             font-size: 17px;
@@ -182,12 +182,12 @@
                 justify-content: flex-start;
                 width: 10px;
                 height: 10px;
-                border: 1px solid $primary;
-                background: $color-white;
+                border: 1px solid $blue;
+                background: $white;
                 opacity: 1;
                 transition: 0.3s;
                 &-active {
-                    background: $primary;
+                    background: $blue;
                 }
             }
         }
@@ -211,8 +211,8 @@
                     transition: 0.3s;
                     background: linear-gradient(
                         to bottom,
-                        rgba($primary, 0.1) 70%,
-                        $primary 100%
+                        rgba($blue, 0.1) 70%,
+                        $blue 100%
                     );
                 }
                 &:hover {
@@ -236,7 +236,7 @@
                 }
             }
             h3 {
-                color: $primary;
+                color: $blue;
                 font-weight: 900;
                 font-size: 16px;
             }
@@ -260,7 +260,7 @@
         z-index: 12;
         top: 50%;
         margin-top: -25px;
-        background: $primary;
+        background: $blue2;
         width: 50px;
         aspect-ratio: 1;
         border-radius: 100%;
@@ -274,7 +274,7 @@
             display: none;
         }
         &:hover {
-            color: $primary;
+            color: $blue;
             background: $green;
             cursor: pointer;
         }
@@ -311,7 +311,7 @@
             position: absolute;
             top: -48px;
             right: 0;
-            color: $color-white;
+            color: $white;
             background: transparent;
             font-size: 36px;
             line-height: 1;
@@ -396,19 +396,19 @@
                     justify-content: flex-start;
                     width: 10px;
                     height: 10px;
-                    border: 1px solid $primary;
-                    background: $color-white;
+                    border: 1px solid $blue;
+                    background: $white;
                     opacity: 1;
                     transition: 0.3s;
                     &-active {
-                        background: $primary;
+                        background: $blue;
                     }
                 }
             }
         }
     }
     &__tweet {
-        background: $color-white;
+        background: $white;
         padding: 30px;
         border-radius: 10px;
         box-shadow: 0 3px 3px rgba($black, 0.25);
@@ -425,7 +425,7 @@
                 aspect-ratio: 1;
                 border-radius: 100%;
                 background: #000;
-                color: $color-white;
+                color: $white;
                 display: flex;
                 align-items: center;
                 justify-content: center;
