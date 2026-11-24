@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { isFilled } from "@prismicio/client";
+import { isFilled, type Content } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
 
 import { Container } from "@/components/Layout/Container";
@@ -17,7 +17,8 @@ export default async function NoticiasArchive() {
         }),
     ]);
     const loQueCreoSlice = homepage.data.slices.find(
-        (slice) => slice.slice_type === "lo_que_creo",
+        (slice): slice is Content.LoQueCreoSlice =>
+            slice.slice_type === "lo_que_creo",
     );
     const orderedPostIds =
         loQueCreoSlice?.primary.items
